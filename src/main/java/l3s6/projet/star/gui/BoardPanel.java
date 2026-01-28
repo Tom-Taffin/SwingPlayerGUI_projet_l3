@@ -24,4 +24,8 @@ public class BoardPanel extends JPanel {
       }
       return super.getPreferredSize();
    }
+
+   public int getNbOfTilesVertical() {
+      return 5;
+   }
 }

@@ -2,16 +2,17 @@ package l3s6.projet.star.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class BoardPanel extends JPanel {
 
-   public BoardPanel() {
-      this.setLayout(new GridBagLayout());
+   public BoardPanel() throws IOException {
+      this.setLayout(new GridLayout(5, 5));
       this.setBackground(Color.LIGHT_GRAY);
 
-      ImageIcon img = new ImageIcon("img/Base_Game_C3_Tile_A.png");
-      JLabel label = new JLabel(img);
-      this.add(label);
+      for (int i = 0; i < 25; i++){
+         this.add(new TilePanel());
+      }
    }
 
    @Override

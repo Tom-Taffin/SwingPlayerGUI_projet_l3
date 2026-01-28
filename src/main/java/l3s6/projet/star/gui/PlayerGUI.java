@@ -2,10 +2,11 @@ package l3s6.projet.star.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class PlayerGUI extends JFrame {
 
-   public PlayerGUI() {
+   public PlayerGUI() throws IOException {
       super("Player GUI");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -19,6 +20,12 @@ public class PlayerGUI extends JFrame {
    }
 
    public static void main(String [] args){
-      SwingUtilities.invokeLater(() -> new PlayerGUI());
+      SwingUtilities.invokeLater(() -> {
+         try {
+            new PlayerGUI();
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      });
    }
 }

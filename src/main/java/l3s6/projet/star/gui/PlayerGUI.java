@@ -19,13 +19,15 @@ public class PlayerGUI extends JFrame {
       setVisible(true);
    }
 
-   public static void main(String [] args){
-      SwingUtilities.invokeLater(() -> {
-         try {
+   public static void main(String[] args) {
+    SwingUtilities.invokeLater(() -> {
+        try {
+            TileManager.getInstance().loadResources("base_game_C3.txt");
             new PlayerGUI();
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
-      });
-   }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error while loading image : " + e.getMessage());
+            System.exit(1);
+        }
+    });
+}
 }

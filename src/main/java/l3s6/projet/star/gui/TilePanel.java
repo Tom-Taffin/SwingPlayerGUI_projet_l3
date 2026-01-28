@@ -1,24 +1,25 @@
 package l3s6.projet.star.gui;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class TilePanel extends JPanel {
-   private Image img;
+   private String tileName;
 
-   public TilePanel() throws IOException {
+   public TilePanel(String tileName) {
+      this.tileName = tileName;
       this.setBackground(Color.DARK_GRAY);
-      this.img = ImageIO.read(new File("img/Base_Game_C3_Tile_A.png"));
    }
 
    @Override
    protected void paintComponent(Graphics g) {
       super.paintComponent(g);
+      
+      Image img = TileManager.getInstance().getImage(this.tileName);
+      
       if (img != null) {
-         g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+         g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
       }
    }
+
 }

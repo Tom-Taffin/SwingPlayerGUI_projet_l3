@@ -1,33 +1,24 @@
 package l3s6.projet.star.gui;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.*;
 
 public class PlayerGUI extends JFrame {
 
    public PlayerGUI() {
       super("Player GUI");
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      WindowListener l = new WindowAdapter() {
-         public void windowClosing(WindowEvent e){
-            System.exit(0);
-         }
-      };
+      JPanel mainPanel = new JPanel(new BorderLayout());
+      BoardPanel board = new BoardPanel();
+      mainPanel.add(board, BorderLayout.WEST);
+      setContentPane(mainPanel);
 
-      addWindowListener(l);
-
-      ImageIcon img = new ImageIcon("img/Base_Game_C3_Tile_A.png");
-      JButton bouton = new JButton("Mon bouton",img);
-      JPanel panel = new JPanel();
-      panel.add(bouton);
-      setContentPane(panel);
-
-
-      setSize(1920,1080);
+      setSize(1920, 1080);
       setVisible(true);
    }
 
    public static void main(String [] args){
-      JFrame frame = new PlayerGUI();
+      SwingUtilities.invokeLater(() -> new PlayerGUI());
    }
 }

@@ -15,7 +15,7 @@ public class PlayerGUI extends JFrame {
       mainPanel.add(board, BorderLayout.WEST);
       setContentPane(mainPanel);
 
-      setSize(1920, 1080);
+      setExtendedState(JFrame.MAXIMIZED_BOTH);
       setVisible(true);
    }
 

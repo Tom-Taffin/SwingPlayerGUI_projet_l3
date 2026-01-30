@@ -28,6 +28,10 @@ public class TileManager {
                 imageCache.put(c, ImageIO.read(file));
             }
         }
+        File file = new File("img/Base_Game_C3_Empty.png");
+        if (file.exists()) {
+            imageCache.put('_', ImageIO.read(file));
+        }
         loadMapping(mappingFilePath);
     }
 

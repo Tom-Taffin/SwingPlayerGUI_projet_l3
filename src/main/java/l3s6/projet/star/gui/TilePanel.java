@@ -8,7 +8,7 @@ public class TilePanel extends JPanel {
 
    public TilePanel(String tileName) {
       this.tileName = tileName;
-      this.setBackground(Color.DARK_GRAY);
+      this.setBackground(Color.WHITE);
    }
 
    @Override

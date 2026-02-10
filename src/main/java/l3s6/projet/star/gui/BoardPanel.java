@@ -15,7 +15,7 @@ public class BoardPanel extends JPanel {
       this.setLayout(new GridLayout(5, 5));
       this.setBackground(Color.LIGHT_GRAY);
 
-      List<String> givenList = Arrays.asList("Wf1r1f2-f2r2f3-f3r3f4-f4r4f1", "Ec-c-f-f", "Nc1-f-f-c2", "Sc-f1rf2-f2-f2rf1", "SC-C-C-C", "empty");
+      List<String> givenList = Arrays.asList("Wc1-f2r3f4-f4r5f6-f6r7f2", "Ef1-C2-f3-C2", "Nf1-f1-f1-f1:A", "Sf1r2f3-f3r4f5-f5r6f7-f7r8f1", "SC1-C1-f2r3f4-C1", "empty");
       Random rand = new Random();
       for (int i = 0; i < 25; i++){
          String randomTileName = givenList.get(rand.nextInt(givenList.size()));

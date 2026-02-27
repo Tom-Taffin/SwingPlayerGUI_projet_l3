@@ -50,8 +50,22 @@ public class TileManager {
         }
     }
 
-    public Image getImage(String tileName) {
+    public Character getCharacter(String tileName) throws ImageNotFoundException {
         Character letter = nameToLetter.get(tileName);
-        return (letter != null) ? imageCache.get(letter) : null;
+        if (letter != null) {
+            return letter;
+        } else {
+            throw new ImageNotFoundException(tileName + " not found.");
+        }
+    }
+
+    public Image getImage(String tileName) throws ImageNotFoundException {
+        Character letter = this.getCharacter(tileName);
+        Image img = imageCache.get(letter);
+        if (img != null) {
+            return img;
+        } else {
+            throw new ImageNotFoundException(tileName + " not found.");
+        }
     }
 }

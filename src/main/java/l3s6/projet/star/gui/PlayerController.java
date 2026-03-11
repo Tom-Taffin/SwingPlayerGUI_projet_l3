@@ -34,17 +34,27 @@ public class PlayerController extends PlayerView {
 
     @Override
     public void updateOnEnter(String id){
-        displayMessage(id + " enters.");
+        displayMessage(id + " ENTERS.");
+    }
+
+    @Override
+    public void updateOnPlace(String id, String player, String tile, int x, int y){
+        displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d.", id, player, tile, x, y));
+    }
+
+    @Override
+    public void updateOnPlaceWithMeeple(String id, String player, String tile, int x, int y, String meeple_type, String meeple_position) {
+        displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meeple_type, meeple_position));
     }
 
     @Override
     public void updateOnLeave(String id){
-        displayMessage(id + " leaves.");
+        displayMessage(id + " LEAVES.");
     }
 
     @Override
     public void updateOnStart(String id){
-        displayMessage("Game starts.");
+        displayMessage("GAME STARTS !");
     }
 
     public void displayMessage(String msg) {

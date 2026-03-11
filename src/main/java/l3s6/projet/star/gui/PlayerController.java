@@ -27,14 +27,23 @@ public class PlayerController extends PlayerView {
     }
 
     public void sendMessage(String message) throws InvalidArgumentNumberException {
-        // envoie directement au reflector
         List<String> msg = List.of(message.split(" "));
         this.client.send(msg.get(0), msg.subList(1, msg.size()));
     }
 
     @Override
     public void updateOnEnter(String id){
-        displayMessage(id + " ENTERS.");
+        displayMessage(String.format("[%s] %s enters.", id, id));
+    }
+
+    @Override
+    public void updateOnLeave(String id){
+        displayMessage(String.format("[%s] %s leaves.", id, id));
+    }
+
+    @Override
+    public void updateOnStart(String id){
+        displayMessage(String.format("[%s] The game starts.", id));
     }
 
     @Override
@@ -48,13 +57,58 @@ public class PlayerController extends PlayerView {
     }
 
     @Override
-    public void updateOnLeave(String id){
-        displayMessage(id + " LEAVES.");
+    public void updateOnBlame(String id, int amount) {
+        displayMessage(String.format("[%s] %d blames are authorized for this game.", id, amount));
     }
 
     @Override
-    public void updateOnStart(String id){
-        displayMessage("GAME STARTS !");
+    public void updateOnBlameWithReason(String id, String player, String reason) {
+        displayMessage(String.format("[%s] Player %s was blamed for the reason %s.", id, player, reason));
+    }
+
+    @Override
+    public void updateOnCollect(String id, String player, String meeple_type) {
+        displayMessage(String.format("[%s] Player %s collects a meeple %s.", id, player, meeple_type));
+    }
+
+    @Override
+    public void updateOnCollectWithAmount(String id, String player, String meeple_type, int amount) {
+        displayMessage(String.format("[%s] Player %s collects %d meeples %s.", id, player, amount, meeple_type));
+    }
+
+    @Override
+    public void updateOnOffer(String id, String player, String tile) {
+        displayMessage(String.format("[%s] Player %s gets the tile %s.", id, player, tile));
+    }
+
+    @Override
+    public void updateOnClose(String id)  {
+        displayMessage(String.format("[%s] %s closes.", id, id));
+    }
+
+    @Override
+    public void updateOnExpel(String id, String expelledPlayer) {
+        displayMessage(String.format("[%s] Player %s was expelled.", id, expelledPlayer));
+    }
+
+    @Override
+    public void updateOnElect(String id, String role, List ids) {
+        displayMessage(String.format("[%s] Players %s gained the role %s.", id, ids, role));
+    }
+
+    @Override
+    public void updateOnAgree(String id, List expOrVar) {
+        displayMessage(String.format("[%s] The expansions and variations %s are chosen for this game.", id, expOrVar.toString()));
+    }
+
+    @Override
+    public void updateOnScore(String id, String otherId, int points) {
+        displayMessage(String.format("[%s] Player %s gains %d points.", id, otherId, points));
+    }
+
+    @Override
+    public void updateOnEnd(String id, List ids) {
+        displayMessage(String.format("[%s] The game ends. Winners : %s.", id, ids.toString()));
     }
 
     public void displayMessage(String msg) {
@@ -65,10 +119,16 @@ public class PlayerController extends PlayerView {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidArgumentNumberException {
+        if (args.length != 3){
+            throw new InvalidArgumentNumberException("Usage : <IPAddress> <Port> <PlayerName>");
+        }
+        String IPAddress = args[0];
+        int port = Integer.parseInt(args[1]);
+        String playerName = args[2];
         SwingUtilities.invokeLater(() -> {
             try {
-                new PlayerController("localhost", 3000, "Rem");
+                new PlayerController(IPAddress, port, playerName);
             } catch (URISyntaxException | InterruptedException | IOException | ImageNotFoundException e) {
                 e.printStackTrace();
             }

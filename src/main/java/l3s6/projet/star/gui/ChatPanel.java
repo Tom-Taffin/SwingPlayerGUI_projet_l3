@@ -22,6 +22,12 @@ public class ChatPanel extends JPanel {
 
         this.chatInput = new JTextField();
         this.add(this.chatInput, BorderLayout.SOUTH);
+
+        this.chatInput.addActionListener(e -> {
+            String message = this.chatInput.getText();
+            displayMessage(message);
+            this.chatInput.setText("");
+        });
     }
 
     public void displayMessage(String message){

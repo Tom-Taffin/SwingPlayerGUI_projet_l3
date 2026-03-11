@@ -26,16 +26,16 @@ public class BoardPanel extends JPanel {
    public void createTilePanel() throws ImageNotFoundException{
       this.removeAll();
 
-      int width = this.board.getMaxWidth() - this.board.getMinWidth() + 1;
-      int height = this.board.getMaxHeight() - this.board.getMinHeight() + 1;
+      int width = this.board.getMaxX() - this.board.getMinX() + 1;
+      int height = this.board.getMaxY() - this.board.getMinY() + 1;
 
       int gridSize = Math.max(width, height) + 2;
       gridSize = Math.max(gridSize, 5);
 
       this.setLayout(new GridLayout(gridSize, gridSize));
 
-      int midX = (this.board.getMaxWidth() + this.board.getMinWidth()) / 2;
-      int midY = (this.board.getMaxHeight() + this.board.getMinHeight()) / 2;
+      int midX = (this.board.getMaxX() + this.board.getMinX()) / 2;
+      int midY = (this.board.getMaxY() + this.board.getMinY()) / 2;
       
       int half = gridSize / 2;
                   

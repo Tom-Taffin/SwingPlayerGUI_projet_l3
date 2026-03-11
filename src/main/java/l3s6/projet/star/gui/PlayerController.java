@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.SwingUtilities;
 
 import l3s6.projet.star.game.tile.Tile;
+import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
 import l3s6.projet.star.interaction.view.PlayerView;
 
 public class PlayerController extends PlayerView {
@@ -23,6 +24,27 @@ public class PlayerController extends PlayerView {
         while ((msg = messageQueue.poll()) != null) {
             this.gui.displayMessage(msg);
         }
+    }
+
+    public void sendMessage(String message) throws InvalidArgumentNumberException {
+        // envoie directement au reflector
+        List<String> msg = List.of(message.split(" "));
+        this.client.send(msg.get(0), msg.subList(1, msg.size()));
+    }
+
+    @Override
+    public void updateOnEnter(String id){
+        displayMessage(id + " enters.");
+    }
+
+    @Override
+    public void updateOnLeave(String id){
+        displayMessage(id + " leaves.");
+    }
+
+    @Override
+    public void updateOnStart(String id){
+        displayMessage("Game starts.");
     }
 
     public void displayMessage(String msg) {

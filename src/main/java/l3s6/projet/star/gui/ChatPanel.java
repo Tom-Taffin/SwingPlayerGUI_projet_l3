@@ -1,0 +1,32 @@
+package l3s6.projet.star.gui;
+
+import java.awt.BorderLayout;
+
+import javax.swing.*;
+
+public class ChatPanel extends JPanel {
+
+    private PlayerController playerController;
+    private JTextArea chatHistory;
+    private JTextField chatInput;
+
+    public ChatPanel(PlayerController playerController){
+        this.playerController = playerController;
+        this.setLayout(new BorderLayout());
+
+        this.chatHistory = new JTextArea();
+        this.chatHistory.setEditable(false);
+        this.chatHistory.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(this.chatHistory);
+        this.add(scrollPane, BorderLayout.CENTER);
+
+        this.chatInput = new JTextField();
+        this.add(this.chatInput, BorderLayout.SOUTH);
+    }
+
+    public void displayMessage(String message){
+        this.chatHistory.append(message += "\n");
+        this.chatHistory.setCaretPosition(this.chatHistory.getDocument().getLength());
+    }
+
+}

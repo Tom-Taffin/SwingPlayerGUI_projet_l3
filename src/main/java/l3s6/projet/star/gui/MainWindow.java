@@ -2,6 +2,9 @@ package l3s6.projet.star.gui;
 
 import javax.swing.*;
 
+import l3s6.projet.star.game.board.Coordinates;
+import l3s6.projet.star.game.tile.WrongTileSyntaxException;
+
 import java.awt.*;
 import java.io.IOException;
 
@@ -31,6 +34,10 @@ public class MainWindow extends JFrame {
 
     public void displayMessage(String message){
         this.chatPanel.displayMessage(message);
+    }
+
+    public void addTile(String tileName, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
+      this.boardPanel.addTile(tileName, coord);
     }
 
 }

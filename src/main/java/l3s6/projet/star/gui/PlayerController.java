@@ -7,11 +7,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.SwingUtilities;
 
-import l3s6.projet.star.game.tile.Tile;
+import org.javatuples.Pair;
+
+import l3s6.projet.star.game.board.Coordinates;
+import l3s6.projet.star.game.tile.WrongTileSyntaxException;
 import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
+import l3s6.projet.star.interaction.network.PlayerClient;
+import l3s6.projet.star.interaction.role.Role;
 import l3s6.projet.star.interaction.view.PlayerView;
 
-public class PlayerController extends PlayerView {
+public class PlayerController extends PlayerView<PlayerClient> {
 
     private MainWindow gui;
     private final ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<>();
@@ -28,11 +33,12 @@ public class PlayerController extends PlayerView {
 
     public void sendMessage(String message) throws InvalidArgumentNumberException {
         List<String> msg = List.of(message.split(" "));
-        this.client.send(msg.get(0), msg.subList(1, msg.size()));
+        this.send(msg.get(0), msg.subList(1, msg.size()));
     }
 
     @Override
     public void updateOnEnter(String id){
+        this.roleManager.addRole(id, Role.SPECTATOR);
         displayMessage(String.format("[%s] %s enters.", id, id));
     }
 
@@ -48,7 +54,17 @@ public class PlayerController extends PlayerView {
 
     @Override
     public void updateOnPlace(String id, String player, String tile, int x, int y){
-        displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d.", id, player, tile, x, y));
+        if (this.roleManager.isRole(id, Role.PLAYER)){
+            displayMessage(String.format("[%s] Player %s wants to place tile %s on position %d:%d.", id, player, tile, x, y));
+        }       
+        else if (this.roleManager.isRole(id, Role.REFEREE)){
+            try {
+                this.gui.addTile(tile, new Coordinates(new Pair<Integer,Integer>(x, y)));
+                displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d.", id, player, tile, x, y));
+            } catch (WrongTileSyntaxException | ImageNotFoundException e) {
+                e.printStackTrace();
+            }
+        }       
     }
 
     @Override
@@ -92,12 +108,15 @@ public class PlayerController extends PlayerView {
     }
 
     @Override
-    public void updateOnElect(String id, String role, List ids) {
+    public void updateOnElect(String id, String role, List<String> ids) {
+        for (String i : ids) {
+            this.roleManager.addRole(i, Role.getRoleFromString(role));
+        }
         displayMessage(String.format("[%s] Players %s gained the role %s.", id, ids, role));
     }
 
     @Override
-    public void updateOnAgree(String id, List expOrVar) {
+    public void updateOnAgree(String id, List<String> expOrVar) {
         displayMessage(String.format("[%s] The expansions and variations %s are chosen for this game.", id, expOrVar.toString()));
     }
 
@@ -107,7 +126,7 @@ public class PlayerController extends PlayerView {
     }
 
     @Override
-    public void updateOnEnd(String id, List ids) {
+    public void updateOnEnd(String id, List<String> ids) {
         displayMessage(String.format("[%s] The game ends. Winners : %s.", id, ids.toString()));
     }
 

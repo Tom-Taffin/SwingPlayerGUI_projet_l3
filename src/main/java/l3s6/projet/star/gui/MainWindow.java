@@ -22,7 +22,7 @@ public class MainWindow extends JFrame {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        this.boardPanel = new BoardPanel();
+        this.boardPanel = new BoardPanel(playerController);
         mainPanel.add(this.boardPanel, BorderLayout.WEST);
 
         this.chatPanel = new ChatPanel(playerController);
@@ -32,6 +32,14 @@ public class MainWindow extends JFrame {
 
         setSize(new Dimension(1200, 800));;
         setVisible(true);
+    }
+
+    public BoardPanel getBoardPanel() {
+      return boardPanel;
+    }
+
+    public ChatPanel getChatPanel() {
+      return chatPanel;
     }
 
     public void displayMessage(String message){

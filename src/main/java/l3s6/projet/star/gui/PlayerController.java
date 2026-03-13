@@ -12,15 +12,17 @@ import org.javatuples.Pair;
 import l3s6.projet.star.game.board.Coordinates;
 import l3s6.projet.star.game.tile.WrongTileSyntaxException;
 import l3s6.projet.star.gui.board.ImageNotFoundException;
+import l3s6.projet.star.gui.board.TileClickListener;
 import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
 import l3s6.projet.star.interaction.network.PlayerClient;
 import l3s6.projet.star.interaction.role.Role;
 import l3s6.projet.star.interaction.view.PlayerView;
 
-public class PlayerController extends PlayerView<PlayerClient> {
+public class PlayerController extends PlayerView<PlayerClient> implements TileClickListener{
 
     private MainWindow gui;
     private final ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<>();
+    private String currentTile;
 
     public PlayerController(String ipAdress, int port, String id) throws URISyntaxException, InterruptedException, IOException, ImageNotFoundException{
         super(ipAdress, port, id);
@@ -75,6 +77,7 @@ public class PlayerController extends PlayerView<PlayerClient> {
         }       
         else if (this.roleManager.isRole(id, Role.REFEREE)){
             try {
+                if (this.currentTile != null) currentTile = null;
                 this.gui.addTileWithMeeple(tile, new Coordinates(new Pair<Integer,Integer>(x, y)), meepleType, meeplePosition);
                 displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meepleType, meeplePosition));
             } catch (WrongTileSyntaxException | ImageNotFoundException e) {
@@ -105,6 +108,9 @@ public class PlayerController extends PlayerView<PlayerClient> {
 
     @Override
     public void updateOnOffer(String id, String player, String tile) {
+        if (this.id.equals(player)){
+            this.currentTile = tile;
+        }
         displayMessage(String.format("[%s] Player %s gets the tile %s.", id, player, tile));
     }
 
@@ -146,6 +152,19 @@ public class PlayerController extends PlayerView<PlayerClient> {
             this.gui.displayMessage(msg);
         } else {
             messageQueue.add(msg);
+        }
+    }
+
+    @Override
+    public void clicked(Coordinates coords) {
+        if (this.currentTile == null){
+            this.gui.getChatPanel().getPlacePanel().displayNotTurn();
+        } 
+        else if (this.gui.getBoardPanel().getBoard().hasTile(coords)) {
+            this.gui.getChatPanel().getPlacePanel().displayWrongPlacement();
+        }
+        else {
+            this.gui.getChatPanel().getPlacePanel().displayGoodPlacement();
         }
     }
 

@@ -12,10 +12,17 @@ public class BoardPanel extends JPanel {
 
    protected Board board;
 
-   public BoardPanel() throws IOException, ImageNotFoundException {
+   private TileClickListener listener;
+
+   public BoardPanel(TileClickListener listener) throws IOException, ImageNotFoundException {
+      this.listener = listener;
       this.board = new Board();
       this.setBackground(Color.BLACK);
       this.createTilePanel();
+   }
+
+   public Board getBoard() {
+      return board;
    }
 
    public void addTile(String tileName, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
@@ -49,9 +56,9 @@ public class BoardPanel extends JPanel {
          for (int j = midX - half; j < midX + (gridSize - half); j++) {
             Coordinates currentCoord = new Coordinates(j, i);
             if (this.board.hasTile(currentCoord)) {
-               this.add(new TilePanel(this.board.getTileAt(currentCoord).toString()));
+               this.add(new TilePanel(this.listener, currentCoord, this.board.getTileAt(currentCoord).toString()));
             } else {
-               this.add(new TilePanel("Nempty")); 
+               this.add(new TilePanel(this.listener, currentCoord, "Nempty")); 
             }
          }
       }

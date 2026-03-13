@@ -8,12 +8,16 @@ import javax.swing.*;
 public class ChatPanel extends JPanel {
 
     private PlayerController playerController;
+    private PlacePanel placePanel;
     private JTextArea chatHistory;
     private JTextField chatInput;
 
     public ChatPanel(PlayerController playerController) {
         this.playerController = playerController;
         this.setLayout(new BorderLayout());
+
+        this.placePanel = new PlacePanel();
+        this.add(placePanel, BorderLayout.NORTH);
 
         this.chatHistory = new JTextArea();
         this.chatHistory.setEditable(false);
@@ -38,6 +42,10 @@ public class ChatPanel extends JPanel {
                 chatInput.setText("");
             }
         });
+    }
+
+    public PlacePanel getPlacePanel(){
+        return this.placePanel;
     }
 
     public void displayMessage(String message){

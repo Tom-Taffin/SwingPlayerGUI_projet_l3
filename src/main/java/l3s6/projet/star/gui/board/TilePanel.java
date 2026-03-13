@@ -2,14 +2,18 @@ package l3s6.projet.star.gui.board;
 
 import javax.swing.*;
 
+import l3s6.projet.star.game.board.Coordinates;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Map;
 
 public class TilePanel extends JPanel {
+   private TileClickListener listener;
    private Character rotation;
    private Image unrotatedTileImage;
    private Image meepleImage;
+   private Coordinates coords;
 
    private static final Map<Character, Double> ROTATIONS = Map.of(
       'N', 0.0,
@@ -18,14 +22,23 @@ public class TilePanel extends JPanel {
       'W', -Math.PI / 2
    );
 
-   public TilePanel(String tileName) throws ImageNotFoundException {
+   public TilePanel(TileClickListener listener, Coordinates coords, String tileName) throws ImageNotFoundException {
+      this.addMouseListener(new TileMouseListener(this));
+      this.listener = listener;
+      this.coords = coords;
       rotation = tileName.charAt(0);
       unrotatedTileImage = TileImageManager.getInstance().getImage(tileName.substring(1));
    }
 
-   public TilePanel(String tileName, String meepleName) throws ImageNotFoundException {
-      this(tileName);
+   public TilePanel(TileClickListener listener, Coordinates coords, String tileName, String meepleName) throws ImageNotFoundException {
+      this(listener, coords, tileName);
       meepleImage = MeepleImageManager.getInstance().getImage(meepleName);
+   }
+
+   public void clicked(){
+      if (listener != null) {
+         this.listener.clicked(this.coords);
+      }
    }
 
    @Override

@@ -8,7 +8,8 @@ import java.util.Map;
 
 public class TilePanel extends JPanel {
    private Character rotation;
-   private Image unrotatedImage;
+   private Image unrotatedTileImage;
+   private Image meepleImage;
 
    private static final Map<Character, Double> ROTATIONS = Map.of(
       'N', 0.0,
@@ -19,7 +20,12 @@ public class TilePanel extends JPanel {
 
    public TilePanel(String tileName) throws ImageNotFoundException {
       rotation = tileName.charAt(0);
-      unrotatedImage = TileImageManager.getInstance().getImage(tileName.substring(1));
+      unrotatedTileImage = TileImageManager.getInstance().getImage(tileName.substring(1));
+   }
+
+   public TilePanel(String tileName, String meepleName) throws ImageNotFoundException {
+      this(tileName);
+      meepleImage = MeepleImageManager.getInstance().getImage(meepleName);
    }
 
    @Override
@@ -40,7 +46,11 @@ public class TilePanel extends JPanel {
          g2.rotate(angle, w / 2.0, h / 2.0);
       }
 
-      g2.drawImage(unrotatedImage, 0, 0, w, h, this);
+      g2.drawImage(unrotatedTileImage, 0, 0, w, h, this);
+
+      if (meepleImage != null) {
+         g2.drawImage(meepleImage, 0, 0, w, h, this);
+      }
 
       g2.setTransform(oldTransform);
    }

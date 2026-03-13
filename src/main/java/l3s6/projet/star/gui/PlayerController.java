@@ -69,8 +69,18 @@ public class PlayerController extends PlayerView<PlayerClient> {
     }
 
     @Override
-    public void updateOnPlaceWithMeeple(String id, String player, String tile, int x, int y, String meeple_type, String meeple_position) {
-        displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meeple_type, meeple_position));
+    public void updateOnPlaceWithMeeple(String id, String player, String tile, int x, int y, String meepleType, String meeplePosition) {
+        if (this.roleManager.isRole(id, Role.PLAYER)){
+            displayMessage(String.format("[%s] Player %s wants to place tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meepleType, meeplePosition));
+        }       
+        else if (this.roleManager.isRole(id, Role.REFEREE)){
+            try {
+                this.gui.addTileWithMeeple(tile, new Coordinates(new Pair<Integer,Integer>(x, y)), meepleType, meeplePosition);
+                displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meepleType, meeplePosition));
+            } catch (WrongTileSyntaxException | ImageNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

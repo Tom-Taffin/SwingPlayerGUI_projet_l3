@@ -23,6 +23,12 @@ public class BoardPanel extends JPanel {
       this.createTilePanel();
    }
 
+   public void addTileWithMeeple(String tileName, Coordinates coord, String meepleType, String meeplePosition) throws WrongTileSyntaxException, ImageNotFoundException{
+      //TODO : add meeple when done in game-elements
+      this.board.putTileAt(new TileBuilder().build(tileName), coord);
+      this.createTilePanel();
+   }
+
    public void createTilePanel() throws ImageNotFoundException{
       this.removeAll();
 

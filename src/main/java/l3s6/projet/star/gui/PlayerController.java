@@ -11,6 +11,7 @@ import org.javatuples.Pair;
 
 import l3s6.projet.star.game.board.Coordinates;
 import l3s6.projet.star.game.tile.WrongTileSyntaxException;
+import l3s6.projet.star.gui.board.ImageNotFoundException;
 import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
 import l3s6.projet.star.interaction.network.PlayerClient;
 import l3s6.projet.star.interaction.role.Role;

@@ -1,4 +1,4 @@
-package l3s6.projet.star.gui;
+package l3s6.projet.star.gui.board;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

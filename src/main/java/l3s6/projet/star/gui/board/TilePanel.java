@@ -19,7 +19,7 @@ public class TilePanel extends JPanel {
 
    public TilePanel(String tileName) throws ImageNotFoundException {
       rotation = tileName.charAt(0);
-      unrotatedImage = TileManager.getInstance().getImage(tileName.substring(1));
+      unrotatedImage = TileImageManager.getInstance().getImage(tileName.substring(1));
    }
 
    @Override

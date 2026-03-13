@@ -1,0 +1,5 @@
+A regular_blue
+B regular_green
+C regular_yellow
+D regular_red
+E regular_black

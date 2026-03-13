@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import l3s6.projet.star.game.board.Coordinates;
 import l3s6.projet.star.game.tile.WrongTileSyntaxException;
+import l3s6.projet.star.gui.board.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -15,7 +16,8 @@ public class MainWindow extends JFrame {
 
     public MainWindow(PlayerController playerController) throws IOException, ImageNotFoundException {
         super("Player GUI");
-        TileManager.getInstance().loadResources("base_game_C3.txt");
+        TileImageManager.getInstance().loadResources("base_game_C3_tile.txt");
+        MeepleImageManager.getInstance().loadResources("base_game_C3_meeple.txt");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(new BorderLayout());

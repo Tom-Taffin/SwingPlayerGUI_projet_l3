@@ -66,7 +66,10 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
         }       
         else if (this.roleManager.isRole(id, Role.REFEREE)){
             try {
-                this.gui.addTile(orientation, new Coordinates(new Pair<Integer,Integer>(x, y)));
+                this.gui.addTile(this.currentTile, orientation, new Coordinates(new Pair<Integer,Integer>(x, y)));
+                this.currentTile = null;
+                this.isMyTurn = false;
+                this.gui.getChatPanel().getPlacePanel().displayTile("empty");
                 displayMessage(String.format("[%s] Player %s places the tile with the orientation %s on position %d:%d.", id, player, orientation, x, y));
             } catch (WrongTileSyntaxException | ImageNotFoundException e) {
                 e.printStackTrace();
@@ -81,8 +84,10 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
         }       
         else if (this.roleManager.isRole(id, Role.REFEREE)){
             try {
-                if (this.currentTile != null) currentTile = null;
                 this.gui.addTileWithMeeple(tile, new Coordinates(new Pair<Integer,Integer>(x, y)), meepleType, meeplePosition);
+                this.currentTile = null;
+                this.isMyTurn = false;
+                this.gui.getChatPanel().getPlacePanel().displayTile("empty");
                 displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meepleType, meeplePosition));
             } catch (WrongTileSyntaxException | ImageNotFoundException e) {
                 e.printStackTrace();
@@ -151,6 +156,10 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     @Override
     public void updateOnEnd(String id, List<String> ids) {
         displayMessage(String.format("[%s] The game ends. Winners : %s.", id, ids.toString()));
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public void displayMessage(String msg) {

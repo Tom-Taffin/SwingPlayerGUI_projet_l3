@@ -6,10 +6,13 @@ import javax.swing.*;
 import l3s6.projet.star.game.board.Coordinates;
 import l3s6.projet.star.gui.board.ImageNotFoundException;
 import l3s6.projet.star.gui.board.TileImageManager;
+import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
 
 public class PlacePanel extends JPanel {
 
+    private PlayerController playerController;
     private String currentTile = "empty";
+    private Coordinates selectedCoordinates;
     private JLabel infoLabel;
     private JPanel tileDisplayPanel;
     private JComboBox<String> orientationCombo;
@@ -17,7 +20,8 @@ public class PlacePanel extends JPanel {
     private JButton placeButton;
     private JPanel inputContainer;
 
-    public PlacePanel() {
+    public PlacePanel(PlayerController playerController) {
+        this.playerController = playerController;
         this.setLayout(new GridLayout(1, 2));
         this.setBackground(Color.WHITE);
 
@@ -83,6 +87,22 @@ public class PlacePanel extends JPanel {
         this.placeButton = new JButton("Place");
         this.placeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        this.placeButton.addActionListener(e -> {
+            String orientation = (String) orientationCombo.getSelectedItem();
+            String meeplePos = meeplePositionField.getText().trim();
+            try {
+                if (meeplePos.isEmpty()) {
+                    this.playerController.send("PLACES", playerController.getId(), orientation, this.selectedCoordinates.getX(), this.selectedCoordinates.getY());
+                } else {
+                    this.playerController.send("PLACES", playerController.getId(), orientation, this.selectedCoordinates.getX(), this.selectedCoordinates.getY(), "regular", meeplePos);
+                }
+                this.setInputVisibility(false);
+                this.infoLabel.setVisible(false);
+            } catch (InvalidArgumentNumberException ex) {
+                ex.printStackTrace();
+            }
+        });
+
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(infoLabel);
         rightPanel.add(Box.createVerticalStrut(15));
@@ -104,20 +124,26 @@ public class PlacePanel extends JPanel {
 
     public void displayTile(String tile) {
         this.currentTile = tile;
+        this.infoLabel.setText("");;
         this.repaint();
     }
 
     public void displayNotTurn() {
+        this.infoLabel.setVisible(true);
         this.infoLabel.setText("Not your turn");
         setInputVisibility(false);
     }
 
     public void displayWrongPlacement(Coordinates coords) {
+        this.selectedCoordinates = coords;
+        this.infoLabel.setVisible(true);
         this.infoLabel.setText(String.format("Can't place on %d:%d", coords.getX(), coords.getY()));
         setInputVisibility(false);
     }
 
     public void displayGoodPlacement(Coordinates coords) {
+        this.selectedCoordinates = coords;
+        this.infoLabel.setVisible(true);
         this.infoLabel.setText(String.format("Do you really want to place on %d:%d ?", coords.getX(), coords.getY()));
         setInputVisibility(true);
         this.revalidate();
@@ -128,11 +154,4 @@ public class PlacePanel extends JPanel {
         return new Dimension(getParent().getWidth(), getParent().getHeight() / 4);
     }
 
-    public String getSelectedOrientation() {
-        return (String) orientationCombo.getSelectedItem();
-    }
-
-    public String getSelectedPosition() {
-        return meeplePositionField.getText().trim();
-    }
 }

@@ -25,8 +25,8 @@ public class BoardPanel extends JPanel {
       return board;
    }
 
-   public void addTile(String tileName, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
-      this.board.putTileAt(new TileBuilder().build(tileName), coord);
+   public void addTile(String tileName, String orientation, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
+      this.board.putTileAt(new TileBuilder().build(orientation+tileName), coord);
       this.createTilePanel();
    }
 

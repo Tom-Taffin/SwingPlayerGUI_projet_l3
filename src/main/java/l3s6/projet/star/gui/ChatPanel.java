@@ -16,7 +16,7 @@ public class ChatPanel extends JPanel {
         this.playerController = playerController;
         this.setLayout(new BorderLayout());
 
-        this.placePanel = new PlacePanel();
+        this.placePanel = new PlacePanel(playerController);
         this.add(placePanel, BorderLayout.NORTH);
 
         this.chatHistory = new JTextArea();

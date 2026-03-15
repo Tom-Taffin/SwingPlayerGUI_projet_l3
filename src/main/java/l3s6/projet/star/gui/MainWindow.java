@@ -46,8 +46,8 @@ public class MainWindow extends JFrame {
         this.chatPanel.displayMessage(message);
     }
 
-    public void addTile(String tileName, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
-      this.boardPanel.addTile(tileName, coord);
+    public void addTile(String tileName, String orientation, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
+      this.boardPanel.addTile(tileName, orientation, coord);
     }
 
     public void addTileWithMeeple(String tileName, Coordinates coord, String meepleType, String meeplePosition) throws WrongTileSyntaxException, ImageNotFoundException{

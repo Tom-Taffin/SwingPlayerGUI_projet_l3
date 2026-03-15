@@ -12,6 +12,7 @@ public class TileMouseListener implements MouseListener {
     }
 
     public void mousePressed(MouseEvent e) {
+        tilePanel.clicked();
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -24,7 +25,6 @@ public class TileMouseListener implements MouseListener {
     }
 
     public void mouseClicked(MouseEvent e) {
-        tilePanel.clicked();
     }
 
 }

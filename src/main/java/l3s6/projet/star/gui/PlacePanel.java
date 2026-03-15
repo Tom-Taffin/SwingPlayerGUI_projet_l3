@@ -1,49 +1,138 @@
 package l3s6.projet.star.gui;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
 import l3s6.projet.star.game.board.Coordinates;
+import l3s6.projet.star.gui.board.ImageNotFoundException;
+import l3s6.projet.star.gui.board.TileImageManager;
 
 public class PlacePanel extends JPanel {
 
-    public PlacePanel(){
+    private String currentTile = "empty";
+    private JLabel infoLabel;
+    private JPanel tileDisplayPanel;
+    private JComboBox<String> orientationCombo;
+    private JTextField meeplePositionField;
+    private JButton placeButton;
+    private JPanel inputContainer;
+
+    public PlacePanel() {
+        this.setLayout(new GridLayout(1, 2));
         this.setBackground(Color.WHITE);
+
+        // left panel with the current tile
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setOpaque(false);
+        leftPanel.add(new JLabel("Current tile :"), BorderLayout.NORTH);
+
+        this.tileDisplayPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    int size = Math.min(getWidth(), getHeight()) - 10;
+                    g2.drawImage(TileImageManager.getInstance().getImage(currentTile), 5, 5, size, size, this);
+                } catch (ImageNotFoundException e) {
+                    g.drawRect(5, 5, getWidth()-10, getHeight()-10);
+                }
+            }
+        };
+        this.tileDisplayPanel.setOpaque(false);
+        leftPanel.add(tileDisplayPanel, BorderLayout.CENTER);
+        this.add(leftPanel);
+
+        // right panel with the place action
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setOpaque(false);
+
+        // a container with info on the click on the board
+        this.infoLabel = new JLabel("");
+        this.infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // a container with orientation and meeple inputs
+        this.inputContainer = new JPanel(new GridBagLayout());
+        this.inputContainer.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // orientation
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        this.inputContainer.add(new JLabel("Orientation :"), gbc);
+        
+        String[] orientations = { "N", "E", "S", "W" };
+        this.orientationCombo = new JComboBox<>(orientations);
+        gbc.gridx = 1;
+        this.inputContainer.add(orientationCombo, gbc);
+
+        // meeple
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        this.inputContainer.add(new JLabel("Meeple position :"), gbc);
+        
+        this.meeplePositionField = new JTextField(5);
+        gbc.gridx = 1;
+        this.inputContainer.add(meeplePositionField, gbc);
+
+        // place button
+        this.placeButton = new JButton("Place");
+        this.placeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        rightPanel.add(Box.createVerticalGlue());
+        rightPanel.add(infoLabel);
+        rightPanel.add(Box.createVerticalStrut(15));
+        rightPanel.add(inputContainer);
+        rightPanel.add(Box.createVerticalStrut(15));
+        rightPanel.add(placeButton);
+        rightPanel.add(Box.createVerticalGlue());
+
+        this.add(rightPanel);
+        
+        this.infoLabel.setVisible(true);
+        setInputVisibility(false);
+    }
+
+    private void setInputVisibility(boolean visible) {
+        this.inputContainer.setVisible(visible);
+        this.placeButton.setVisible(visible);
+    }
+
+    public void displayTile(String tile) {
+        this.currentTile = tile;
+        this.repaint();
+    }
+
+    public void displayNotTurn() {
+        this.infoLabel.setText("Not your turn");
+        setInputVisibility(false);
+    }
+
+    public void displayWrongPlacement(Coordinates coords) {
+        this.infoLabel.setText(String.format("Can't place on %d:%d", coords.getX(), coords.getY()));
+        setInputVisibility(false);
+    }
+
+    public void displayGoodPlacement(Coordinates coords) {
+        this.infoLabel.setText(String.format("Do you really want to place on %d:%d ?", coords.getX(), coords.getY()));
+        setInputVisibility(true);
+        this.revalidate();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        Container parent = getParent();
-        if (parent != null) {
-            int h = parent.getHeight();
-            return new Dimension(parent.getWidth(), h/5);
-        }
-        return super.getPreferredSize();
+        return new Dimension(getParent().getWidth(), getParent().getHeight() / 4);
     }
 
-    public void displayNotTurn() {
-        this.removeAll();
-        this.add(new JLabel("It's not your turn"));
-        this.revalidate();
-        this.repaint();
+    public String getSelectedOrientation() {
+        return (String) orientationCombo.getSelectedItem();
     }
 
-    public void displayWrongPlacement() {
-        this.removeAll();
-        this.add(new JLabel("Can't place here"));
-        this.revalidate();
-        this.repaint();
+    public String getSelectedPosition() {
+        return meeplePositionField.getText().trim();
     }
-
-    public void displayGoodPlacement() {
-        this.removeAll();
-        this.add(new JLabel("Do you really want to place here ?"));
-        this.revalidate();
-        this.repaint();;
-    }
-
 }

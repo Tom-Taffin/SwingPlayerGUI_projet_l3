@@ -3,7 +3,6 @@ package l3s6.projet.star.gui;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.SwingUtilities;
 
@@ -21,16 +20,21 @@ import l3s6.projet.star.interaction.view.PlayerView;
 public class PlayerController extends PlayerView<PlayerClient> implements TileClickListener{
 
     private MainWindow gui;
-    private final ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<>();
     private String currentTile;
+    private boolean isMyTurn;
 
     public PlayerController(String ipAdress, int port, String id) throws URISyntaxException, InterruptedException, IOException, ImageNotFoundException{
         super(ipAdress, port, id);
-        this.gui = new MainWindow(this);
+    }
 
-        String msg;
-        while ((msg = messageQueue.poll()) != null) {
-            this.gui.displayMessage(msg);
+    @Override
+    protected void beforeConnection(){
+        super.beforeConnection();
+        try {
+            this.gui = new MainWindow(this);
+            this.isMyTurn = false;
+        } catch (IOException | ImageNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -56,14 +60,14 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     }
 
     @Override
-    public void updateOnPlace(String id, String player, String tile, int x, int y){
+    public void updateOnPlace(String id, String player, String orientation, int x, int y){
         if (this.roleManager.isRole(id, Role.PLAYER)){
-            displayMessage(String.format("[%s] Player %s wants to place tile %s on position %d:%d.", id, player, tile, x, y));
+            displayMessage(String.format("[%s] Player %s wants to place the tile with the orientation %s on position %d:%d.", id, player, orientation, x, y));
         }       
         else if (this.roleManager.isRole(id, Role.REFEREE)){
             try {
-                this.gui.addTile(tile, new Coordinates(new Pair<Integer,Integer>(x, y)));
-                displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d.", id, player, tile, x, y));
+                this.gui.addTile(orientation, new Coordinates(new Pair<Integer,Integer>(x, y)));
+                displayMessage(String.format("[%s] Player %s places the tile with the orientation %s on position %d:%d.", id, player, orientation, x, y));
             } catch (WrongTileSyntaxException | ImageNotFoundException e) {
                 e.printStackTrace();
             }
@@ -108,9 +112,11 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnOffer(String id, String player, String tile) {
+        this.currentTile = tile;
         if (this.id.equals(player)){
-            this.currentTile = tile;
+            this.isMyTurn = true;
         }
+        this.gui.getChatPanel().getPlacePanel().displayTile(tile);
         displayMessage(String.format("[%s] Player %s gets the tile %s.", id, player, tile));
     }
 
@@ -148,23 +154,19 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     }
 
     public void displayMessage(String msg) {
-        if (this.gui != null) {
-            this.gui.displayMessage(msg);
-        } else {
-            messageQueue.add(msg);
-        }
+        this.gui.displayMessage(msg);
     }
 
     @Override
     public void clicked(Coordinates coords) {
-        if (this.currentTile == null){
+        if (!this.isMyTurn){
             this.gui.getChatPanel().getPlacePanel().displayNotTurn();
         } 
         else if (this.gui.getBoardPanel().getBoard().hasTile(coords)) {
-            this.gui.getChatPanel().getPlacePanel().displayWrongPlacement();
+            this.gui.getChatPanel().getPlacePanel().displayWrongPlacement(coords);
         }
         else {
-            this.gui.getChatPanel().getPlacePanel().displayGoodPlacement();
+            this.gui.getChatPanel().getPlacePanel().displayGoodPlacement(coords);
         }
     }
 

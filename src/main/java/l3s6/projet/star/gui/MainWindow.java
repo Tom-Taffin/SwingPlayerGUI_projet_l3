@@ -50,8 +50,8 @@ public class MainWindow extends JFrame {
       this.boardPanel.addTile(tileName, orientation, coord);
     }
 
-    public void addTileWithMeeple(String tileName, Coordinates coord, String meepleType, String meeplePosition) throws WrongTileSyntaxException, ImageNotFoundException{
-      this.boardPanel.addTileWithMeeple(tileName, coord, meepleType, meeplePosition);
+    public void addTileWithMeeple(String player, String tileName, Coordinates coord, String meepleType, String meeplePosition) throws WrongTileSyntaxException, ImageNotFoundException{
+      this.boardPanel.addTileWithMeeple(player, tileName, coord, meepleType, meeplePosition);
     }
 
 }

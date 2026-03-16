@@ -3,6 +3,8 @@ package l3s6.projet.star.gui.board;
 import javax.swing.*;
 
 import l3s6.projet.star.game.board.Coordinates;
+import l3s6.projet.star.game.meeple.Meeple;
+import l3s6.projet.star.game.tile.Tile;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 public class TilePanel extends JPanel {
    private TileClickListener listener;
+   private BoardPanel boardPanel;
    private Character rotation;
    private Image unrotatedTileImage;
    private Image meepleImage;
@@ -22,17 +25,22 @@ public class TilePanel extends JPanel {
       'W', -Math.PI / 2
    );
 
-   public TilePanel(TileClickListener listener, Coordinates coords, String tileName) throws ImageNotFoundException {
+   
+   public TilePanel(TileClickListener listener, BoardPanel boardPanel, Coordinates coords, String tileName) throws ImageNotFoundException {
       this.addMouseListener(new TileMouseListener(this));
       this.listener = listener;
       this.coords = coords;
-      rotation = tileName.charAt(0);
-      unrotatedTileImage = TileImageManager.getInstance().getImage(tileName.substring(1));
+      this.rotation = tileName.charAt(0);
+      this.unrotatedTileImage = TileImageManager.getInstance().getImage(tileName.substring(1));
+      
    }
 
-   public TilePanel(TileClickListener listener, Coordinates coords, String tileName, String meepleName) throws ImageNotFoundException {
-      this(listener, coords, tileName);
-      meepleImage = MeepleImageManager.getInstance().getImage(meepleName);
+   public TilePanel(TileClickListener listener, BoardPanel boardPanel, Coordinates coords, Tile tile) throws ImageNotFoundException {
+      this(listener, boardPanel, coords, tile.toString());
+      Meeple tileMeeple = tile.getMeeple();
+      if (tileMeeple != null){
+         this.meepleImage = MeepleImageManager.getInstance().getImage("regular" + this.boardPanel.idToColor.get(tileMeeple.getPlayer().getID()));
+      }
    }
 
    public void clicked(){

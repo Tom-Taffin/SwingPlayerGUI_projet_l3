@@ -66,7 +66,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
         }       
         else if (this.roleManager.isRole(id, Role.REFEREE)){
             try {
-                this.gui.addTile(this.currentTile, orientation, new Coordinates(new Pair<Integer,Integer>(x, y)));
+                this.gui.addTile(this.currentTile, orientation+this.currentTile, new Coordinates(new Pair<Integer,Integer>(x, y)));
                 this.currentTile = null;
                 this.isMyTurn = false;
                 this.gui.getChatPanel().getPlacePanel().displayTile("empty");
@@ -78,17 +78,17 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     }
 
     @Override
-    public void updateOnPlaceWithMeeple(String id, String player, String tile, int x, int y, String meepleType, String meeplePosition) {
+    public void updateOnPlaceWithMeeple(String id, String player, String orientation, int x, int y, String meepleType, String meeplePosition) {
         if (this.roleManager.isRole(id, Role.PLAYER)){
-            displayMessage(String.format("[%s] Player %s wants to place tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meepleType, meeplePosition));
+            displayMessage(String.format("[%s] Player %s wants to place tile %s on position %d:%d with meeple %s on position %s.", id, player, orientation, x, y, meepleType, meeplePosition));
         }       
         else if (this.roleManager.isRole(id, Role.REFEREE)){
             try {
-                this.gui.addTileWithMeeple(tile, new Coordinates(new Pair<Integer,Integer>(x, y)), meepleType, meeplePosition);
+                this.gui.addTileWithMeeple(player, orientation+this.currentTile, new Coordinates(new Pair<Integer,Integer>(x, y)), meepleType, meeplePosition);
                 this.currentTile = null;
                 this.isMyTurn = false;
                 this.gui.getChatPanel().getPlacePanel().displayTile("empty");
-                displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, tile, x, y, meepleType, meeplePosition));
+                displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, orientation, x, y, meepleType, meeplePosition));
             } catch (WrongTileSyntaxException | ImageNotFoundException e) {
                 e.printStackTrace();
             }

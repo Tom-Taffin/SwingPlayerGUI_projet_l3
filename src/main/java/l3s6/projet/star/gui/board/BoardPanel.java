@@ -1,21 +1,37 @@
 package l3s6.projet.star.gui.board;
 
 import javax.swing.*;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.io.IOException;
+import java.util.*;
+
 import l3s6.projet.star.game.board.Board;
 import l3s6.projet.star.game.board.Coordinates;
+import l3s6.projet.star.game.edge.WrongTopologyException;
+import l3s6.projet.star.game.meeple.Meeple;
+import l3s6.projet.star.game.player.Player;
+import l3s6.projet.star.game.tile.Direction;
 import l3s6.projet.star.game.tile.TileBuilder;
 import l3s6.projet.star.game.tile.WrongTileSyntaxException;
 
 public class BoardPanel extends JPanel {
 
    protected Board board;
-
+   public Map<String, String> idToColor;
+   private Map<String, Player> idToPlayer;
    private TileClickListener listener;
+   private final List<String> colors = List.of("blue", "green", "yellow", "red", "black");
+   private int nextColor;
 
    public BoardPanel(TileClickListener listener) throws IOException, ImageNotFoundException {
       this.listener = listener;
+      this.idToColor = new HashMap<>();
+      this.idToPlayer = new HashMap<>();
+      this.nextColor = 0;
       this.board = new Board();
       this.setBackground(Color.BLACK);
       this.createTilePanel();
@@ -25,14 +41,26 @@ public class BoardPanel extends JPanel {
       return board;
    }
 
+   public void addPlayer(String id, int startingAmount){
+      this.idToPlayer.put(id, new Player(id, startingAmount));
+      this.idToColor.put(id, this.colors.get(this.nextColor));
+      this.nextColor++;
+   }
+
    public void addTile(String tileName, String orientation, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
       this.board.putTileAt(new TileBuilder().build(orientation+tileName), coord);
       this.createTilePanel();
    }
 
-   public void addTileWithMeeple(String tileName, Coordinates coord, String meepleType, String meeplePosition) throws WrongTileSyntaxException, ImageNotFoundException{
-      //TODO : add meeple when done in game-elements
+   public void addTileWithMeeple(String id, String tileName, Coordinates coord, String meepleType, String meeplePosition) throws WrongTileSyntaxException, ImageNotFoundException{
+      Character edge = meeplePosition.charAt(0);
+      int index = Integer.parseInt(meeplePosition.substring(1));
       this.board.putTileAt(new TileBuilder().build(tileName), coord);
+      try {
+         this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(new Meeple(this.idToPlayer.get(id)));
+      } catch (WrongTopologyException | WrongTileSyntaxException e) {
+         e.printStackTrace();
+      };
       this.createTilePanel();
    }
 
@@ -56,9 +84,9 @@ public class BoardPanel extends JPanel {
          for (int j = midX - half; j < midX + (gridSize - half); j++) {
             Coordinates currentCoord = new Coordinates(j, i);
             if (this.board.hasTile(currentCoord)) {
-               this.add(new TilePanel(this.listener, currentCoord, this.board.getTileAt(currentCoord).toString()));
+               this.add(new TilePanel(this.listener, this, currentCoord, this.board.getTileAt(currentCoord)));
             } else {
-               this.add(new TilePanel(this.listener, currentCoord, "Nempty")); 
+               this.add(new TilePanel(this.listener, this, currentCoord, "Nempty")); 
             }
          }
       }

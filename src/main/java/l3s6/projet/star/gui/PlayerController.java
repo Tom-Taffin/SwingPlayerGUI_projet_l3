@@ -27,6 +27,10 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
         super(ipAdress, port, id);
     }
 
+    public MainWindow getGui() {
+        return gui;
+    }
+
     @Override
     protected void beforeConnection(){
         super.beforeConnection();

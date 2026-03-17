@@ -176,7 +176,7 @@ public class PlacePanel extends JPanel {
             try {
                 char edge = pos.charAt(0);
                 int index = Integer.parseInt(pos.substring(1));
-                String color = "blue"; 
+                String color = this.playerController.getGui().getBoardPanel().idToColor.get(this.playerController.getId()); 
                 this.tileImagePanel.setMeeple("regular", color, edge, index, 1);
             } catch (ImageNotFoundException e) {
                 this.tileImagePanel.removeMeeple();

@@ -14,6 +14,7 @@ public class PlacePanel extends JPanel {
     private Coordinates selectedCoordinates;
     private JLabel infoLabel;
     private TileImagePanel tileImagePanel;
+    private String currentBaseTileName = "empty";
     private JComboBox<String> orientationCombo;
     private JTextField meeplePositionField;
     private JButton placeButton;
@@ -65,6 +66,7 @@ public class PlacePanel extends JPanel {
         this.orientationCombo = new JComboBox<>(orientations);
         gbc.gridx = 1;
         this.inputContainer.add(orientationCombo, gbc);
+        this.orientationCombo.addActionListener(e -> this.updatePreview());
 
         // meeple
         gbc.gridx = 0;
@@ -74,6 +76,11 @@ public class PlacePanel extends JPanel {
         this.meeplePositionField = new JTextField(5);
         gbc.gridx = 1;
         this.inputContainer.add(meeplePositionField, gbc);
+        this.meeplePositionField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { updatePreview(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { updatePreview(); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { updatePreview(); }
+        });
 
         // place button
         this.placeButton = new JButton("Place");
@@ -115,12 +122,16 @@ public class PlacePanel extends JPanel {
     }
 
     public void displayTile(String tile) {
+        this.currentBaseTileName = tile;
+
+        if (tile.equals("empty") || tile.equals("Nempty")) {
+            this.meeplePositionField.setText("");
+            this.tileImagePanel.removeMeeple();
+        }
         try {
             String tileNameWithOrientation = ((String) this.orientationCombo.getSelectedItem()) + tile;
             this.tileImagePanel.setTile(tileNameWithOrientation); 
-            this.infoLabel.setText("");
-            this.revalidate();
-            this.repaint();
+            this.updatePreview();
         } catch (ImageNotFoundException e) {
             e.printStackTrace();
         }
@@ -150,6 +161,29 @@ public class PlacePanel extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(getParent().getWidth(), getParent().getHeight() / 4);
+    }
+
+    private void updatePreview() {
+        if (this.tileImagePanel == null) return;
+
+        String orientation = (String) orientationCombo.getSelectedItem();
+        if (orientation != null && !orientation.isEmpty()) {
+            this.tileImagePanel.setRotation(orientation.charAt(0));
+        }
+
+        String pos = meeplePositionField.getText().trim();
+        if (pos.length() >= 2 && !currentBaseTileName.contains("empty")) {
+            try {
+                char edge = pos.charAt(0);
+                int index = Integer.parseInt(pos.substring(1));
+                String color = "blue"; 
+                this.tileImagePanel.setMeeple("regular", color, edge, index, 1);
+            } catch (ImageNotFoundException e) {
+                this.tileImagePanel.removeMeeple();
+            }
+        } else {
+            this.tileImagePanel.removeMeeple();
+        }
     }
 
 }

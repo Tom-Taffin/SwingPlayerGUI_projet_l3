@@ -49,6 +49,16 @@ public class TileImagePanel extends JPanel {
       this.meepleImage = MeepleImageManager.getInstance().getImage(this.meepleType + "_" + this.meepleColor);
    }
 
+   public void setRotation(char rotation) {
+      this.rotation = rotation;
+      this.repaint();
+   }
+
+   public void removeMeeple() {
+      this.hasMeeple = false;
+      this.repaint();
+   }
+
    @Override
    protected void paintComponent(Graphics g) {
       super.paintComponent(g);

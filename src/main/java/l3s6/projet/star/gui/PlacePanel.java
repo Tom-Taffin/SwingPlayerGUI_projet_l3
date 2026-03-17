@@ -5,16 +5,15 @@ import javax.swing.*;
 
 import l3s6.projet.star.game.board.Coordinates;
 import l3s6.projet.star.gui.board.ImageNotFoundException;
-import l3s6.projet.star.gui.board.TileImageManager;
+import l3s6.projet.star.gui.board.TileImagePanel;
 import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
 
 public class PlacePanel extends JPanel {
 
     private PlayerController playerController;
-    private String currentTile = "empty";
     private Coordinates selectedCoordinates;
     private JLabel infoLabel;
-    private JPanel tileDisplayPanel;
+    private TileImagePanel tileImagePanel;
     private JComboBox<String> orientationCombo;
     private JTextField meeplePositionField;
     private JButton placeButton;
@@ -30,23 +29,16 @@ public class PlacePanel extends JPanel {
         leftPanel.setOpaque(false);
         leftPanel.add(new JLabel("Current tile :"), BorderLayout.NORTH);
 
-        this.tileDisplayPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-                    Graphics2D g2 = (Graphics2D) g;
-                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                    int size = Math.min(getWidth(), getHeight()) - 10;
-                    g2.drawImage(TileImageManager.getInstance().getImage(currentTile), 5, 5, size, size, this);
-                } catch (ImageNotFoundException e) {
-                    g.drawRect(5, 5, getWidth()-10, getHeight()-10);
-                }
-            }
-        };
-        this.tileDisplayPanel.setOpaque(false);
-        leftPanel.add(tileDisplayPanel, BorderLayout.CENTER);
-        this.add(leftPanel);
+        
+        try {
+            this.tileImagePanel = new TileImagePanel("Nempty");
+            this.tileImagePanel.setOpaque(false);
+            leftPanel.add(tileImagePanel, BorderLayout.CENTER);
+            this.add(leftPanel);
+        } catch (ImageNotFoundException e) {
+            e.printStackTrace();
+        }
+        
 
         // right panel with the place action
         JPanel rightPanel = new JPanel();
@@ -123,9 +115,15 @@ public class PlacePanel extends JPanel {
     }
 
     public void displayTile(String tile) {
-        this.currentTile = tile;
-        this.infoLabel.setText("");;
-        this.repaint();
+        try {
+            String tileNameWithOrientation = ((String) this.orientationCombo.getSelectedItem()) + tile;
+            this.tileImagePanel.setTile(tileNameWithOrientation); 
+            this.infoLabel.setText("");
+            this.revalidate();
+            this.repaint();
+        } catch (ImageNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void displayNotTurn() {

@@ -32,6 +32,13 @@ public class TileImagePanel extends JPanel {
       this.unrotatedTileImage = TileImageManager.getInstance().getImage(this.tileName);  
    }
 
+   public void setTile(String fullTileName) throws ImageNotFoundException {
+      this.rotation = fullTileName.charAt(0);
+      this.tileName = fullTileName.substring(1);
+      this.unrotatedTileImage = TileImageManager.getInstance().getImage(this.tileName);
+      this.repaint();
+   }
+
    public void setMeeple(String meepleType, String meepleColor, Character meepleEdge, int meepleIndexOnEdge, int edgeLength) throws ImageNotFoundException{
       this.hasMeeple = true;
       this.meepleType = meepleType;
@@ -52,44 +59,55 @@ public class TileImagePanel extends JPanel {
 
       int w = getWidth();
       int h = getHeight();
+      int size = Math.min(w, h);
+      int xOffset = (w - size) / 2;
+      int yOffset = (h - size) / 2;
 
       AffineTransform oldTransform = g2.getTransform();
 
       if (rotation != null) {
          double angle = ROTATIONS.getOrDefault(rotation, 0.0);
          g2.rotate(angle, w / 2.0, h / 2.0);
-         g2.drawImage(unrotatedTileImage, 0, 0, w, h, this);
+         g2.drawImage(unrotatedTileImage, xOffset, yOffset, size, size, this);
          g2.rotate(-angle, w / 2.0, h / 2.0);
       } 
       else {
-         g2.drawImage(unrotatedTileImage, 0, 0, w, h, this);
+         g2.drawImage(unrotatedTileImage, xOffset, yOffset, size, size, this);
       }
 
-      if (this.hasMeeple) {
-         if (this.meepleIndexOnEdge < this.edgeLength){
-            int meepleW = w/4;
-            int meepleH = h/4;
-            int meepleX = 0;
-            int meepleY = 0;
-            if (this.meepleEdge.equals('R')){ 
-               meepleX = w*3/4;
-               meepleY = (h / ((this.meepleIndexOnEdge+1) * 8 / (this.edgeLength+1))) + (meepleH/2);
-            }
-            else if (this.meepleEdge.equals('L')){ 
-               meepleY = (h / ((this.meepleIndexOnEdge+1) * 8 / (this.edgeLength+1))) + (meepleH/2);
-            }
-            else if (this.meepleEdge.equals('T')){
-               meepleX = (w / ((this.meepleIndexOnEdge+1) * 8 / (this.edgeLength+1))) + (meepleW/2);
-            }
-            else if (this.meepleEdge.equals('B')){
-               meepleX = (w / ((this.meepleIndexOnEdge+1) * 8 / (this.edgeLength+1))) + (meepleW/2);
-               meepleY = h*3/4;
-            }
-            g2.drawImage(meepleImage, meepleX, meepleY, meepleW, meepleH, this);
-         }
+      if (this.hasMeeple && this.meepleIndexOnEdge < this.edgeLength){
+         this.drawMeeple(g2, xOffset, yOffset, size);
       }
 
       g2.setTransform(oldTransform);
+   }
+
+   private void drawMeeple(Graphics2D g2, int x, int y, int size) {
+      int meepleW = size / 4;
+      int meepleH = size / 4;
+      int meepleX = x;
+      int meepleY = y;
+
+      int step = (size / ((this.meepleIndexOnEdge + 1) * 8 / (this.edgeLength + 1)));
+
+      if (this.meepleEdge.equals('R')) { 
+         meepleX = x + (size * 3 / 4);
+         meepleY = y + step + (meepleH / 2);
+      }
+      else if (this.meepleEdge.equals('L')) { 
+         meepleX = x;
+         meepleY = y + step + (meepleH / 2);
+      }
+      else if (this.meepleEdge.equals('T')) {
+         meepleX = x + step + (meepleW / 2);
+         meepleY = y;
+      }
+      else if (this.meepleEdge.equals('B')) {
+         meepleX = x + step + (meepleW / 2);
+         meepleY = y + (size * 3 / 4);
+      }
+
+      g2.drawImage(meepleImage, meepleX, meepleY, meepleW, meepleH, this);
    }
 
 }

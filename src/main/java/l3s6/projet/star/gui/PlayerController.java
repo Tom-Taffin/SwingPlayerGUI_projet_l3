@@ -106,12 +106,13 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     }
 
     @Override
-    public void updateOnCollect(String id, String player, String meeple_type) {
-        displayMessage(String.format("[%s] Player %s collects a meeple %s.", id, player, meeple_type));
+    public void updateOnCollect(String id, String player, String meeple_type, int x, int y) {
+        displayMessage(String.format("[%s] Player %s collects a meeple %s at position %d:%d.", id, player, meeple_type, x, y));
     }
 
     @Override
-    public void updateOnCollectWithAmount(String id, String player, String meeple_type, int amount) {
+    public void updateOnCollectAtStart(String id, String player, String meeple_type, int amount) {
+        this.gui.getBoardPanel().addMeepleToPlayer(player, amount);
         displayMessage(String.format("[%s] Player %s collects %d meeples %s.", id, player, amount, meeple_type));
     }
 
@@ -138,6 +139,9 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     @Override
     public void updateOnElect(String id, String role, List<String> ids) {
         for (String i : ids) {
+            if (role.equals("player")){
+                this.gui.getBoardPanel().addPlayer(i, 0);
+            }
             this.roleManager.addRole(i, Role.getRoleFromString(role));
         }
         displayMessage(String.format("[%s] Players %s gained the role %s.", id, ids, role));
@@ -156,6 +160,11 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     @Override
     public void updateOnEnd(String id, List<String> ids) {
         displayMessage(String.format("[%s] The game ends. Winners : %s.", id, ids.toString()));
+    }
+
+    @Override
+    public void updateOnPlay(String id) {
+        displayMessage(String.format("[%s] %s will play this game.", id, id));
     }
 
     public String getId() {

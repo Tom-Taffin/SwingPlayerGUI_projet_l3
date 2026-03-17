@@ -29,6 +29,7 @@ public class TilePanel extends JPanel {
    public TilePanel(TileClickListener listener, BoardPanel boardPanel, Coordinates coords, String tileName) throws ImageNotFoundException {
       this.addMouseListener(new TileMouseListener(this));
       this.listener = listener;
+      this.boardPanel = boardPanel;
       this.coords = coords;
       this.rotation = tileName.charAt(0);
       this.unrotatedTileImage = TileImageManager.getInstance().getImage(tileName.substring(1));
@@ -39,7 +40,7 @@ public class TilePanel extends JPanel {
       this(listener, boardPanel, coords, tile.toString());
       Meeple tileMeeple = tile.getMeeple();
       if (tileMeeple != null){
-         this.meepleImage = MeepleImageManager.getInstance().getImage("regular" + this.boardPanel.idToColor.get(tileMeeple.getPlayer().getID()));
+         this.meepleImage = MeepleImageManager.getInstance().getImage("regular_" + this.boardPanel.idToColor.get(tileMeeple.getPlayer().getID()));
       }
    }
 

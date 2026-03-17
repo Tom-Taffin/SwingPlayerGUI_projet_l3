@@ -47,6 +47,13 @@ public class BoardPanel extends JPanel {
       this.nextColor++;
    }
 
+   public void addMeepleToPlayer(String id, int amount){
+      Player player = this.idToPlayer.get(id);
+      for (int i = 0; i < amount; i++){
+         player.incrementMeepleCount();
+      }
+   }
+
    public void addTile(String tileName, String orientation, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
       this.board.putTileAt(new TileBuilder().build(orientation+tileName), coord);
       this.createTilePanel();

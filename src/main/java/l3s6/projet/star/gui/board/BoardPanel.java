@@ -11,10 +11,14 @@ import java.util.*;
 
 import l3s6.projet.star.game.board.Board;
 import l3s6.projet.star.game.board.Coordinates;
+import l3s6.projet.star.game.edge.Edge;
+import l3s6.projet.star.game.edge.NoMeepleException;
 import l3s6.projet.star.game.edge.WrongTopologyException;
+import l3s6.projet.star.game.edge.Zone;
 import l3s6.projet.star.game.meeple.Meeple;
 import l3s6.projet.star.game.player.Player;
 import l3s6.projet.star.game.tile.Direction;
+import l3s6.projet.star.game.tile.Tile;
 import l3s6.projet.star.game.tile.TileBuilder;
 import l3s6.projet.star.game.tile.WrongTileSyntaxException;
 
@@ -54,6 +58,27 @@ public class BoardPanel extends JPanel {
       }
    }
 
+   public void removeMeeple(String id, int x, int y) throws ImageNotFoundException{
+      Tile tile = this.board.getTileAt(new Coordinates(x, y));
+      for (Direction d : Direction.values()){
+         Edge edge = tile.getEdge(d);
+         for (Zone zone : edge.getZones()){
+            if (zone.hasMeeple()){
+               Meeple meeple = zone.getMeeple();
+               if(meeple.getPlayer().getID().equals(id)){
+                  try {
+                     zone.giveBackMeeple();
+                     meeple.incrementPlayerMeeple();
+                  } catch (NoMeepleException e) {
+                     throw new RuntimeException(e);
+                  }
+               }
+            }
+         }
+      }
+      this.createTilePanel();
+   }
+
    public void addTile(String tileName, String orientation, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
       this.board.putTileAt(new TileBuilder().build(orientation+tileName), coord);
       this.createTilePanel();
@@ -64,7 +89,9 @@ public class BoardPanel extends JPanel {
       int index = Integer.parseInt(meeplePosition.substring(1));
       this.board.putTileAt(new TileBuilder().build(tileName), coord);
       try {
-         this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(new Meeple(this.idToPlayer.get(id)));
+         Meeple meeple = new Meeple(this.idToPlayer.get(id));
+         meeple.decrementPlayerMeeple();
+         this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(meeple);
       } catch (WrongTopologyException | WrongTileSyntaxException e) {
          e.printStackTrace();
       };

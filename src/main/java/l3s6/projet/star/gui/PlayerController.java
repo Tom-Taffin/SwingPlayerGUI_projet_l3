@@ -107,7 +107,12 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnCollect(String id, String player, String meeple_type, int x, int y) {
-        displayMessage(String.format("[%s] Player %s collects a meeple %s at position %d:%d.", id, player, meeple_type, x, y));
+        try {
+            this.gui.getBoardPanel().removeMeeple(player, x, y);
+            displayMessage(String.format("[%s] Player %s collects a meeple %s at position %d:%d.", id, player, meeple_type, x, y));
+        } catch (ImageNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -4,6 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import l3s6.projet.star.game.board.Coordinates;
+import l3s6.projet.star.game.tile.Direction;
+import l3s6.projet.star.game.tile.TileBuilder;
+import l3s6.projet.star.game.tile.WrongTileSyntaxException;
 import l3s6.projet.star.gui.board.ImageNotFoundException;
 import l3s6.projet.star.gui.board.TileImagePanel;
 import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
@@ -177,9 +180,9 @@ public class PlacePanel extends JPanel {
                 char edge = pos.charAt(0);
                 int index = Integer.parseInt(pos.substring(1));
                 String color = this.playerController.getGui().getBoardPanel().idToColor.get(this.playerController.getId()); 
-                this.tileImagePanel.setMeeple("regular", color, edge, index, 1);
-            } catch (ImageNotFoundException e) {
-                this.tileImagePanel.removeMeeple();
+                this.tileImagePanel.setMeeple("regular", color, edge, index, new TileBuilder().build(orientation.charAt(0) + this.currentBaseTileName).getEdge(Direction.fromChar(edge)).getSize());
+            } catch (ImageNotFoundException | WrongTileSyntaxException e){
+                e.printStackTrace();
             }
         } else {
             this.tileImagePanel.removeMeeple();

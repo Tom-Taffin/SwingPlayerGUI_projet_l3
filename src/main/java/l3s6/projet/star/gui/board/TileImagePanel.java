@@ -106,28 +106,30 @@ public class TileImagePanel extends JPanel {
    }
 
    private void drawMeeple(Graphics2D g2, int x, int y, int size) {
-      int meepleW = size / 4;
-      int meepleH = size / 4;
+      int meepleW = size / 5;
+      int meepleH = size / 5;
+
+      double ratio = (double) (this.meepleIndexOnEdge + 0.5) / this.edgeLength;
+      int offset = (int) (size * ratio);
+
       int meepleX = x;
       int meepleY = y;
 
-      int step = (size / ((this.meepleIndexOnEdge + 1) * 8 / (this.edgeLength + 1)));
-
       if (this.meepleEdge.equals('R')) { 
-         meepleX = x + (size * 3 / 4);
-         meepleY = y + step + (meepleH / 2);
+         meepleX = x + size - meepleW;
+         meepleY = y + offset - (meepleH / 2);
       }
       else if (this.meepleEdge.equals('L')) { 
          meepleX = x;
-         meepleY = y + step + (meepleH / 2);
+         meepleY = y + offset - (meepleH / 2);
       }
       else if (this.meepleEdge.equals('T')) {
-         meepleX = x + step + (meepleW / 2);
+         meepleX = x + offset - (meepleW / 2);
          meepleY = y;
       }
       else if (this.meepleEdge.equals('B')) {
-         meepleX = x + step + (meepleW / 2);
-         meepleY = y + (size * 3 / 4);
+         meepleX = x + offset - (meepleW / 2);
+         meepleY = y + size - meepleH;
       }
 
       g2.drawImage(meepleImage, meepleX, meepleY, meepleW, meepleH, this);

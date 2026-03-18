@@ -1,6 +1,6 @@
 _ empty
-A f1-f1-f1r1f1-f1:A
-B f1-f1-f1-f1:A
+A Af1-f1-f1r1f1-f1
+B Af1-f1-f1-f1
 C C1-C1-C1-C1
 D c1-f1r1f2-f2-f2r1f1
 E c1-f1-f1-f1

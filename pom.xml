@@ -75,6 +75,26 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>de.elnarion.maven</groupId>
+                <artifactId>plantuml-generator-maven-plugin</artifactId>
+                <version>2.1.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-uml</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <scanPackages>
+                                <scanPackage>l3s6.projet.star.gui</scanPackage>
+                            </scanPackages>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputFilename>diagram.puml</outputFilename>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.6.0</version>

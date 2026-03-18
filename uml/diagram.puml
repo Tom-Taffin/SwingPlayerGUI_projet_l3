@@ -1,0 +1,167 @@
+@startuml
+
+class l3s6.projet.star.gui.ChatPanel {
+	{field} -chatHistory : javax.swing.JTextArea
+	{field} -chatInput : javax.swing.JTextField
+	{method} +displayMessage ( paramString1 : String ) : void
+}
+
+
+class l3s6.projet.star.gui.MainWindow {
+	{method} +addTile ( paramString1 : String , paramString2 : String , paramCoordinates3 : l3s6.projet.star.game.board.Coordinates ) : void
+	{method} +addTileWithMeeple ( paramString1 : String , paramString2 : String , paramCoordinates3 : l3s6.projet.star.game.board.Coordinates , paramString4 : String , paramString5 : String ) : void
+	{method} +displayMessage ( paramString1 : String ) : void
+}
+
+
+class l3s6.projet.star.gui.PlacePanel {
+	{field} -currentBaseTileName : String
+	{field} -infoLabel : javax.swing.JLabel
+	{field} -inputContainer : javax.swing.JPanel
+	{field} -meeplePositionField : javax.swing.JTextField
+	{field} -orientationCombo : javax.swing.JComboBox
+	{field} -placeButton : javax.swing.JButton
+	{field} -selectedCoordinates : l3s6.projet.star.game.board.Coordinates
+	{method} +displayGoodPlacement ( paramCoordinates1 : l3s6.projet.star.game.board.Coordinates ) : void
+	{method} +displayNotTurn () : void
+	{method} +displayTile ( paramString1 : String ) : void
+	{method} +displayWrongPlacement ( paramCoordinates1 : l3s6.projet.star.game.board.Coordinates ) : void
+	{method} +getPreferredSize () : java.awt.Dimension
+	{method} -setInputVisibility ( paramboolean1 : boolean ) : void
+	{method} -updatePreview () : void
+}
+
+
+class l3s6.projet.star.gui.PlayerController {
+	{field} -currentTile : String
+	{field} -isMyTurn : boolean
+	{method} #beforeConnection () : void
+	{method} +clicked ( paramCoordinates1 : l3s6.projet.star.game.board.Coordinates ) : void
+	{method} +displayMessage ( paramString1 : String ) : void
+	{method} +getId () : String
+	{method}  {static} +main ( paramString;1 : [Ljava.lang.String; ) : void
+	{method} +sendMessage ( paramString1 : String ) : void
+	{method} +updateOnAgree ( paramString1 : String , paramList2 : java.util.List ) : void
+	{method} +updateOnBlame ( paramString1 : String , paramint2 : int ) : void
+	{method} +updateOnBlameWithReason ( paramString1 : String , paramString2 : String , paramString3 : String ) : void
+	{method} +updateOnClose ( paramString1 : String ) : void
+	{method} +updateOnCollect ( paramString1 : String , paramString2 : String , paramString3 : String , paramint4 : int , paramint5 : int ) : void
+	{method} +updateOnCollectAtStart ( paramString1 : String , paramString2 : String , paramString3 : String , paramint4 : int ) : void
+	{method} +updateOnElect ( paramString1 : String , paramString2 : String , paramList3 : java.util.List ) : void
+	{method} +updateOnEnd ( paramString1 : String , paramList2 : java.util.List ) : void
+	{method} +updateOnEnter ( paramString1 : String ) : void
+	{method} +updateOnExpel ( paramString1 : String , paramString2 : String ) : void
+	{method} +updateOnLeave ( paramString1 : String ) : void
+	{method} +updateOnOffer ( paramString1 : String , paramString2 : String , paramString3 : String ) : void
+	{method} +updateOnPlace ( paramString1 : String , paramString2 : String , paramString3 : String , paramint4 : int , paramint5 : int ) : void
+	{method} +updateOnPlaceWithMeeple ( paramString1 : String , paramString2 : String , paramString3 : String , paramint4 : int , paramint5 : int , paramString6 : String , paramString7 : String ) : void
+	{method} +updateOnPlay ( paramString1 : String ) : void
+	{method} +updateOnScore ( paramString1 : String , paramString2 : String , paramint3 : int ) : void
+	{method} +updateOnStart ( paramString1 : String ) : void
+}
+
+
+class l3s6.projet.star.gui.board.BoardPanel {
+	{field} #board : l3s6.projet.star.game.board.Board
+	{field} -colors : java.util.List
+	{field} +idToColor : java.util.Map
+	{field} -idToPlayer : java.util.Map
+	{field} -nextColor : int
+	{method} +addMeepleToPlayer ( paramString1 : String , paramint2 : int ) : void
+	{method} +addPlayer ( paramString1 : String , paramint2 : int ) : void
+	{method} +addTile ( paramString1 : String , paramString2 : String , paramCoordinates3 : l3s6.projet.star.game.board.Coordinates ) : void
+	{method} +addTileWithMeeple ( paramString1 : String , paramString2 : String , paramCoordinates3 : l3s6.projet.star.game.board.Coordinates , paramString4 : String , paramString5 : String ) : void
+	{method} +createTilePanel () : void
+	{method} +getPreferredSize () : java.awt.Dimension
+	{method} +removeMeeple ( paramString1 : String , paramint2 : int , paramint3 : int ) : void
+}
+
+
+abstract class l3s6.projet.star.gui.board.ImageManager {
+	{field} #imageCache : java.util.Map
+	{field} #nameToLetter : java.util.Map
+	{method} +getCharacter ( paramString1 : String ) : Character
+	{method} +getImage ( paramString1 : String ) : java.awt.Image
+	{method} #loadMapping ( paramString1 : String ) : void
+	{method}  {abstract} +loadResources ( paramString1 : String ) : void
+}
+
+
+class l3s6.projet.star.gui.board.ImageNotFoundException {
+}
+
+
+class l3s6.projet.star.gui.board.MeepleImageManager {
+	{method} +loadResources ( paramString1 : String ) : void
+}
+
+
+interface l3s6.projet.star.gui.board.TileClickListener {
+	{method}  {abstract} +clicked ( paramCoordinates1 : l3s6.projet.star.game.board.Coordinates ) : void
+}
+
+
+class l3s6.projet.star.gui.board.TileImageManager {
+	{method} +loadResources ( paramString1 : String ) : void
+}
+
+
+class l3s6.projet.star.gui.board.TileImagePanel {
+	{field} {static} -ROTATIONS : java.util.Map
+	{field} -edgeLength : int
+	{field} -hasMeeple : boolean
+	{field} -hovered : boolean
+	{field} -meepleColor : String
+	{field} -meepleEdge : Character
+	{field} -meepleImage : java.awt.Image
+	{field} -meepleIndexOnEdge : int
+	{field} -meepleType : String
+	{field} -rotation : Character
+	{field} -tileName : String
+	{field} -unrotatedTileImage : java.awt.Image
+	{method} -drawMeeple ( paramGraphics2D1 : java.awt.Graphics2D , paramint2 : int , paramint3 : int , paramint4 : int ) : void
+	{method} #paintComponent ( paramGraphics1 : java.awt.Graphics ) : void
+	{method} +removeMeeple () : void
+	{method} +setMeeple ( paramString1 : String , paramString2 : String , paramCharacter3 : Character , paramint4 : int , paramint5 : int ) : void
+	{method} +setTile ( paramString1 : String ) : void
+}
+
+
+class l3s6.projet.star.gui.board.TileMouseListener {
+	{method} +mouseClicked ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+	{method} +mouseEntered ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+	{method} +mouseExited ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+	{method} +mousePressed ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+	{method} +mouseReleased ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+}
+
+
+class l3s6.projet.star.gui.board.TilePanel {
+	{field} -coords : l3s6.projet.star.game.board.Coordinates
+	{field} -hovered : boolean
+	{method} +clicked () : void
+}
+
+
+
+
+l3s6.projet.star.gui.ChatPanel -->  l3s6.projet.star.gui.PlacePanel : placePanel
+l3s6.projet.star.gui.ChatPanel -->  l3s6.projet.star.gui.PlayerController : playerController
+l3s6.projet.star.gui.MainWindow -->  l3s6.projet.star.gui.ChatPanel : chatPanel
+l3s6.projet.star.gui.MainWindow -->  l3s6.projet.star.gui.board.BoardPanel : boardPanel
+l3s6.projet.star.gui.PlacePanel -->  l3s6.projet.star.gui.PlayerController : playerController
+l3s6.projet.star.gui.PlacePanel -->  l3s6.projet.star.gui.board.TileImagePanel : tileImagePanel
+l3s6.projet.star.gui.PlayerController -->  l3s6.projet.star.gui.MainWindow : gui
+l3s6.projet.star.gui.PlayerController ..|>  l3s6.projet.star.gui.board.TileClickListener
+l3s6.projet.star.gui.board.BoardPanel -->  l3s6.projet.star.gui.board.TileClickListener : listener
+l3s6.projet.star.gui.board.MeepleImageManager -->  l3s6.projet.star.gui.board.MeepleImageManager : instance
+l3s6.projet.star.gui.board.MeepleImageManager --|>  l3s6.projet.star.gui.board.ImageManager
+l3s6.projet.star.gui.board.TileImageManager -->  l3s6.projet.star.gui.board.TileImageManager : instance
+l3s6.projet.star.gui.board.TileImageManager --|>  l3s6.projet.star.gui.board.ImageManager
+l3s6.projet.star.gui.board.TileMouseListener -->  l3s6.projet.star.gui.board.TilePanel : tilePanel
+l3s6.projet.star.gui.board.TilePanel -->  l3s6.projet.star.gui.board.BoardPanel : boardPanel
+l3s6.projet.star.gui.board.TilePanel -->  l3s6.projet.star.gui.board.TileClickListener : listener
+l3s6.projet.star.gui.board.TilePanel -->  l3s6.projet.star.gui.board.TileImagePanel : tileImagePanel
+
+
+@enduml

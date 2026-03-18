@@ -108,7 +108,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnBlameWithReason(String id, String player, String reason) {
-        this.gui.getBoardPanel().getPlayerById(id).blame();
+        this.gui.getBoardPanel().getPlayerById(player).blame();
         this.gui.getChatPanel().getPlayersPanel().updatePanel();
         displayMessage(String.format("[%s] Player %s was blamed for the reason %s.", id, player, reason));
     }

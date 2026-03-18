@@ -1,9 +1,11 @@
 package l3s6.projet.star.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import l3s6.projet.star.game.player.Player;
 import l3s6.projet.star.gui.board.ImageNotFoundException;
@@ -27,10 +29,27 @@ public class PlayerPanel extends JPanel {
             e.printStackTrace();
         }
 
-        this.playerInfo = new JPanel();
-        this.playerInfo.add(new JLabel(player.getID()));
-        this.playerInfo.add(new JLabel(Integer.toString(player.getScore())));
+        this.playerInfo = new JPanel(new GridLayout(4, 1, 0, 2));
+        
+        JLabel idLabel = new JLabel(player.getID());
+        idLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        this.playerInfo.add(idLabel);
+
+        JLabel scoreLabel = new JLabel("Score : " + player.getScore());
+        this.playerInfo.add(scoreLabel);
+
+        JLabel meepleCountLabel = new JLabel("Meeples remaining : " + player.getNbMeeples());
+        this.playerInfo.add(meepleCountLabel);
+
+        JLabel blameLabel = new JLabel("Blames : " + player.getNumberOfBlames());
+        this.playerInfo.add(blameLabel);
+
         this.add(this.playerInfo);
+
+        this.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY),
+            new EmptyBorder(10, 10, 10, 10)
+        ));
     }
 
 }

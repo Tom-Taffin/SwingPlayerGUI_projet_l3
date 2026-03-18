@@ -11,6 +11,7 @@ import l3s6.projet.star.game.player.Player;
 public class PlayersPanel extends JPanel {
 
     private PlayerController playerController;
+    private Map<String, Player> colorsToPlayers;
 
     public PlayersPanel(PlayerController playerController) {
         this.playerController = playerController;
@@ -18,9 +19,14 @@ public class PlayersPanel extends JPanel {
     }
 
     public void updatePanel(Map<String, Player> colorsToPlayers){
+        this.colorsToPlayers = colorsToPlayers;
+        this.updatePanel();
+    }
+
+    public void updatePanel(){
         this.removeAll();
-        this.setLayout(new GridLayout(colorsToPlayers.size(), 1));
-        colorsToPlayers.forEach((color, player) -> {
+        this.setLayout(new GridLayout(this.colorsToPlayers.size(), 1));
+        this.colorsToPlayers.forEach((color, player) -> {
             this.add(new PlayerPanel(player, color));
         });
         this.revalidate();

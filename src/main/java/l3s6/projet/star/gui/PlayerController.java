@@ -107,6 +107,8 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnBlameWithReason(String id, String player, String reason) {
+        this.gui.getBoardPanel().getPlayerById(id).blame();
+        this.gui.getChatPanel().getPlayersPanel().updatePanel();
         displayMessage(String.format("[%s] Player %s was blamed for the reason %s.", id, player, reason));
     }
 
@@ -114,6 +116,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     public void updateOnCollect(String id, String player, String meeple_type, int x, int y) {
         try {
             this.gui.getBoardPanel().removeMeeple(player, x, y);
+            this.gui.getChatPanel().getPlayersPanel().updatePanel();
             displayMessage(String.format("[%s] Player %s collects a meeple %s at position %d:%d.", id, player, meeple_type, x, y));
         } catch (ImageNotFoundException e) {
             e.printStackTrace();
@@ -123,6 +126,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     @Override
     public void updateOnCollectAtStart(String id, String player, String meeple_type, int amount) {
         this.gui.getBoardPanel().addMeepleToPlayer(player, amount);
+        this.gui.getChatPanel().getPlayersPanel().updatePanel();
         displayMessage(String.format("[%s] Player %s collects %d meeples %s.", id, player, amount, meeple_type));
     }
 
@@ -165,7 +169,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
     @Override
     public void updateOnScore(String id, String otherId, int points) {
         this.gui.getBoardPanel().getPlayerById(otherId).addPoints(points);
-        this.gui.getChatPanel().getPlayersPanel().updatePanel(this.gui.getBoardPanel().getColorsToPlayers());
+        this.gui.getChatPanel().getPlayersPanel().updatePanel();
         displayMessage(String.format("[%s] Player %s gains %d points.", id, otherId, points));
     }
 

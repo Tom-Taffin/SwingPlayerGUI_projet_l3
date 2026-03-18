@@ -93,6 +93,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
                 this.currentTile = null;
                 this.isMyTurn = false;
                 this.gui.getChatPanel().getPlacePanel().displayTile("empty");
+                this.gui.getChatPanel().getPlayersPanel().updatePanel();
                 displayMessage(String.format("[%s] Player %s places tile %s on position %d:%d with meeple %s on position %s.", id, player, orientation, x, y, meepleType, meeplePosition));
             } catch (WrongTileSyntaxException | ImageNotFoundException e) {
                 e.printStackTrace();

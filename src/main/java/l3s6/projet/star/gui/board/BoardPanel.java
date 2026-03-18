@@ -12,9 +12,10 @@ import java.util.*;
 import l3s6.projet.star.game.board.Board;
 import l3s6.projet.star.game.board.Coordinates;
 import l3s6.projet.star.game.edge.Edge;
-import l3s6.projet.star.game.edge.NoMeepleException;
+import l3s6.projet.star.game.meeple.NoMeepleException;
 import l3s6.projet.star.game.edge.WrongTopologyException;
 import l3s6.projet.star.game.edge.Zone;
+import l3s6.projet.star.game.meeple.AlreadyHaveMeepleException;
 import l3s6.projet.star.game.meeple.Meeple;
 import l3s6.projet.star.game.player.Player;
 import l3s6.projet.star.game.tile.Direction;
@@ -107,7 +108,7 @@ public class BoardPanel extends JPanel {
          Meeple meeple = new Meeple(this.idToPlayer.get(id), coord);
          meeple.decrementPlayerMeeple();
          this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(meeple);
-      } catch (WrongTopologyException | WrongTileSyntaxException e) {
+      } catch (WrongTopologyException | WrongTileSyntaxException | AlreadyHaveMeepleException e) {
          e.printStackTrace();
       };
       this.createTilePanel();

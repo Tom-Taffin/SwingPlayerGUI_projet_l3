@@ -45,6 +45,21 @@ public class BoardPanel extends JPanel {
       return board;
    }
 
+   public Map<String, Player> getColorsToPlayers(){
+      Map<String, Player> res = new HashMap<>();
+      idToColor.forEach((id, color) -> {
+         Player p = idToPlayer.get(id);
+         if (p != null) {
+               res.put(color, p);
+         }
+      });
+      return res;
+   }
+
+   public Player getPlayerById(String id){
+      return this.idToPlayer.get(id);
+   }
+
    public void addPlayer(String id, int startingAmount){
       this.idToPlayer.put(id, new Player(id, startingAmount));
       this.idToColor.put(id, this.colors.get(this.nextColor));
@@ -79,8 +94,8 @@ public class BoardPanel extends JPanel {
       this.createTilePanel();
    }
 
-   public void addTile(String tileName, String orientation, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
-      this.board.putTileAt(new TileBuilder().build(orientation+tileName), coord);
+   public void addTile(String id, String tileName, Coordinates coord) throws WrongTileSyntaxException, ImageNotFoundException{
+      this.board.putTileAt(new TileBuilder().build(tileName), coord);
       this.createTilePanel();
    }
 

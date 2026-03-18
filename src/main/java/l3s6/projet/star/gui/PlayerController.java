@@ -60,6 +60,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnStart(String id){
+        this.gui.getChatPanel().getPlayersPanel().updatePanel(this.gui.getBoardPanel().getColorsToPlayers());
         displayMessage(String.format("[%s] The game starts.", id));
     }
 
@@ -70,7 +71,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
         }       
         else if (this.roleManager.isRole(id, Role.REFEREE)){
             try {
-                this.gui.addTile(this.currentTile, orientation+this.currentTile, new Coordinates(new Pair<Integer,Integer>(x, y)));
+                this.gui.addTile(player, orientation+this.currentTile, new Coordinates(new Pair<Integer,Integer>(x, y)));
                 this.currentTile = null;
                 this.isMyTurn = false;
                 this.gui.getChatPanel().getPlacePanel().displayTile("empty");
@@ -163,6 +164,8 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnScore(String id, String otherId, int points) {
+        this.gui.getBoardPanel().getPlayerById(otherId).addPoints(points);
+        this.gui.getChatPanel().getPlayersPanel().updatePanel(this.gui.getBoardPanel().getColorsToPlayers());
         displayMessage(String.format("[%s] Player %s gains %d points.", id, otherId, points));
     }
 

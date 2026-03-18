@@ -2,32 +2,48 @@ package l3s6.projet.star.gui;
 
 import l3s6.projet.star.interaction.command.InvalidArgumentNumberException;
 
-import java.awt.BorderLayout;
+import java.awt.*;
+
 import javax.swing.*;
 
 public class ChatPanel extends JPanel {
 
     private PlayerController playerController;
     private PlacePanel placePanel;
+    private PlayersPanel playersPanel;
     private JTextArea chatHistory;
     private JTextField chatInput;
 
     public ChatPanel(PlayerController playerController) {
         this.playerController = playerController;
-        this.setLayout(new BorderLayout());
 
-        this.placePanel = new PlacePanel(playerController);
-        this.add(placePanel, BorderLayout.NORTH);
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
 
         this.chatHistory = new JTextArea();
         this.chatHistory.setEditable(false);
         this.chatHistory.setLineWrap(true);
-
         JScrollPane scrollPane = new JScrollPane(this.chatHistory);
-        this.add(scrollPane, BorderLayout.CENTER);
+        gbc.gridy = 0;
+        gbc.weighty = 0.15;
+        this.add(scrollPane, gbc);
 
+        this.placePanel = new PlacePanel(playerController);
+        gbc.gridy = 1;
+        gbc.weighty = 0.20;
+        this.add(placePanel, gbc);
+
+        this.playersPanel = new PlayersPanel(playerController);
+        gbc.gridy = 2;
+        gbc.weighty = 0.60;
+        this.add(playersPanel, gbc);
+        
         this.chatInput = new JTextField();
-        this.add(this.chatInput, BorderLayout.SOUTH);
+        gbc.gridy = 3;
+        gbc.weighty = 0.05;
+        this.add(this.chatInput, gbc);
 
         // ENVOI DU MESSAGE AVEC ENTREE
         this.chatInput.addActionListener(e -> {
@@ -46,6 +62,10 @@ public class ChatPanel extends JPanel {
 
     public PlacePanel getPlacePanel(){
         return this.placePanel;
+    }
+
+    public PlayersPanel getPlayersPanel(){
+        return this.playersPanel;
     }
 
     public void displayMessage(String message){

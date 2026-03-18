@@ -89,7 +89,7 @@ public class BoardPanel extends JPanel {
       int index = Integer.parseInt(meeplePosition.substring(1));
       this.board.putTileAt(new TileBuilder().build(tileName), coord);
       try {
-         Meeple meeple = new Meeple(this.idToPlayer.get(id));
+         Meeple meeple = new Meeple(this.idToPlayer.get(id), coord);
          meeple.decrementPlayerMeeple();
          this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(meeple);
       } catch (WrongTopologyException | WrongTileSyntaxException e) {

@@ -14,7 +14,7 @@ L c1-f1r1f2-f2r2f3-f3r3f1
 M C1-C1-f1-f1
 N c1-c1-f1-f1
 O C1-f1r1f2-f2r1f1-C1
-P c1-f1r1f2-f2r1f1-C1
+P c1-f1r1f2-f2r1f1-c1
 Q C1-C1-f1-C1
 R c1-c1-f1-c1
 S C1-C1-f1r1f2-C1

@@ -26,21 +26,25 @@ public class ChatPanel extends JPanel {
         this.chatHistory.setEditable(false);
         this.chatHistory.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(this.chatHistory);
+        scrollPane.setPreferredSize(new Dimension(0, 0));
         gbc.gridy = 0;
-        gbc.weighty = 0.15;
+        gbc.weighty = 0.20;
         this.add(scrollPane, gbc);
 
         this.placePanel = new PlacePanel(playerController);
+        this.placePanel.setPreferredSize(new Dimension(0, 0));
         gbc.gridy = 1;
-        gbc.weighty = 0.20;
+        gbc.weighty = 0.10;
         this.add(placePanel, gbc);
 
         this.playersPanel = new PlayersPanel(playerController);
+        this.playersPanel.setPreferredSize(new Dimension(0, 0));
         gbc.gridy = 2;
-        gbc.weighty = 0.60;
+        gbc.weighty = 0.65;
         this.add(playersPanel, gbc);
         
         this.chatInput = new JTextField();
+        this.chatInput.setPreferredSize(new Dimension(0, 0));
         gbc.gridy = 3;
         gbc.weighty = 0.05;
         this.add(this.chatInput, gbc);

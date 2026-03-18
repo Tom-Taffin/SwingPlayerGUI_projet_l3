@@ -7,7 +7,6 @@ import javax.swing.*;
 
 import l3s6.projet.star.game.player.Player;
 import l3s6.projet.star.gui.board.ImageNotFoundException;
-import l3s6.projet.star.gui.board.MeepleImageManager;
 import l3s6.projet.star.gui.board.MeepleImagePanel;
 
 public class PlayerPanel extends JPanel {

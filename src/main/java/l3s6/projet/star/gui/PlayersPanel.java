@@ -1,16 +1,12 @@
 package l3s6.projet.star.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
 
 import l3s6.projet.star.game.player.Player;
-import l3s6.projet.star.gui.board.ImageNotFoundException;
-import l3s6.projet.star.gui.board.TileImagePanel;
 
 public class PlayersPanel extends JPanel {
 

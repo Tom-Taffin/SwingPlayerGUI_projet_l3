@@ -116,22 +116,28 @@ public class BoardPanel extends JPanel {
    public void createTilePanel() throws ImageNotFoundException{
       this.removeAll();
 
-      int width = this.board.getMaxX() - this.board.getMinX() + 1;
-      int height = this.board.getMaxY() - this.board.getMinY() + 1;
+      int minX = this.board.getMinX();
+      int maxX = this.board.getMaxX();
+      int minY = this.board.getMinY();
+      int maxY = this.board.getMaxY();
 
-      int gridSize = Math.max(width, height) + 2;
+      int width = maxX - minX + 1;
+      int height = maxY - minY + 1;
+
+      int gridSize = Math.max(width, height) + 2; 
       gridSize = Math.max(gridSize, 5);
 
       this.setLayout(new GridLayout(gridSize, gridSize));
 
-      int midX = (this.board.getMaxX() + this.board.getMinX()) / 2;
-      int midY = (this.board.getMaxY() + this.board.getMinY()) / 2;
+      int marginX = (gridSize - width) / 2;
+      int marginY = (gridSize - height) / 2;
+
+      int startY = maxY + marginY;
+      int startX = minX - marginX;
       
-      int half = gridSize / 2;
-                  
-      for (int i = midY + half; i > midY - (gridSize - half); i--) {
-         for (int j = midX - half; j < midX + (gridSize - half); j++) {
-            Coordinates currentCoord = new Coordinates(j, i);
+      for (int i = 0; i < gridSize; i++) {
+         for (int j = 0; j < gridSize; j++) {
+            Coordinates currentCoord = new Coordinates(startX + j, startY - i);
             if (this.board.hasTile(currentCoord)) {
                this.add(new TilePanel(this.listener, this, currentCoord, this.board.getTileAt(currentCoord)));
             } else {

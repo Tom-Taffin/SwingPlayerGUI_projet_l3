@@ -17,6 +17,7 @@ public class TilePanel extends JPanel {
    private BoardPanel boardPanel;
    private Coordinates coords;
    private TileImagePanel tileImagePanel;
+   private boolean hovered = false;
    
    public TilePanel(TileClickListener listener, BoardPanel boardPanel, Coordinates coords, String tileName) throws ImageNotFoundException {
       this.setLayout(new BorderLayout());
@@ -25,6 +26,7 @@ public class TilePanel extends JPanel {
       this.boardPanel = boardPanel;
       this.coords = coords;
       this.tileImagePanel = new TileImagePanel(tileName);
+      this.tileImagePanel.addMouseListener(new TileMouseListener(this));
       this.add(this.tileImagePanel, BorderLayout.CENTER);
    }
 
@@ -50,6 +52,12 @@ public class TilePanel extends JPanel {
       if (listener != null) {
          this.listener.clicked(this.coords);
       }
+   }
+
+   public void setHovered(boolean hovered) {
+      this.hovered = hovered;
+      this.tileImagePanel.setHovered(hovered);
+      repaint();
    }
 
 }

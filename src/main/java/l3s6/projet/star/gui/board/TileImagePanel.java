@@ -17,6 +17,7 @@ public class TileImagePanel extends JPanel {
    private boolean hasMeeple = false;
    private Image unrotatedTileImage;
    private Image meepleImage;
+   private boolean hovered = false;
 
    private static final Map<Character, Double> ROTATIONS = Map.of(
       'N', 0.0,
@@ -90,6 +91,18 @@ public class TileImagePanel extends JPanel {
       }
 
       g2.setTransform(oldTransform);
+
+      if (hovered) {
+         Graphics2D overlay = (Graphics2D) g.create();
+         overlay.setColor(new Color(0, 0, 0, 80));
+         overlay.fillRect(0, 0, w, h);
+         overlay.dispose();
+      }
+   }
+
+   public void setHovered(boolean hovered) {
+      this.hovered = hovered;
+      repaint();
    }
 
    private void drawMeeple(Graphics2D g2, int x, int y, int size) {

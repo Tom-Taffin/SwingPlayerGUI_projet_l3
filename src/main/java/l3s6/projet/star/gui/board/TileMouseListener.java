@@ -19,9 +19,11 @@ public class TileMouseListener implements MouseListener {
     }
 
     public void mouseEntered(MouseEvent e) {
+        tilePanel.setHovered(true);
     }
 
     public void mouseExited(MouseEvent e) {
+        tilePanel.setHovered(false);
     }
 
     public void mouseClicked(MouseEvent e) {

@@ -22,6 +22,7 @@ public class PlacePanel extends JPanel {
     private JTextField meeplePositionField;
     private JButton placeButton;
     private JPanel inputContainer;
+    private final String DEFAULT_ORIENTATION = "N";
 
     public PlacePanel(PlayerController playerController) {
         this.playerController = playerController;
@@ -132,6 +133,7 @@ public class PlacePanel extends JPanel {
             this.tileImagePanel.removeMeeple();
         }
         try {
+            this.orientationCombo.setSelectedItem(DEFAULT_ORIENTATION);
             String tileNameWithOrientation = ((String) this.orientationCombo.getSelectedItem()) + tile;
             this.tileImagePanel.setTile(tileNameWithOrientation); 
             this.updatePreview();

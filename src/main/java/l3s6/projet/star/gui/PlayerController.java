@@ -138,6 +138,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
             this.isMyTurn = true;
         }
         this.gui.getChatPanel().getPlacePanel().displayTile(tile);
+        this.gui.getChatPanel().getPlayersPanel().setCurrent(player);
         displayMessage(String.format("[%s] Player %s gets the tile %s.", id, player, tile));
     }
 

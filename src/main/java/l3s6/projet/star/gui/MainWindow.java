@@ -15,7 +15,7 @@ public class MainWindow extends JFrame {
     private ChatPanel chatPanel;
 
     public MainWindow(PlayerController playerController) throws IOException, ImageNotFoundException {
-        super("Player GUI");
+        super(playerController.getId() + " GUI");
         TileImageManager.getInstance().loadResources("base_game_C3_tile.txt");
         MeepleImageManager.getInstance().loadResources("base_game_C3_meeple.txt");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

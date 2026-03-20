@@ -2,6 +2,8 @@ package l3s6.projet.star.gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
@@ -12,6 +14,8 @@ public class PlayersPanel extends JPanel {
 
     private PlayerController playerController;
     private Map<String, Player> colorsToPlayers;
+    private List<PlayerPanel> playerPanels;
+    private String currentPlayerId;
 
     public PlayersPanel(PlayerController playerController) {
         this.playerController = playerController;
@@ -26,11 +30,22 @@ public class PlayersPanel extends JPanel {
     public void updatePanel(){
         this.removeAll();
         this.setLayout(new GridLayout(this.colorsToPlayers.size(), 1));
+        this.playerPanels = new ArrayList<>();
         this.colorsToPlayers.forEach((color, player) -> {
-            this.add(new PlayerPanel(player, color));
+            PlayerPanel panel = new PlayerPanel(player, color);
+            if (player.getID().equals(this.currentPlayerId)) {
+                panel.setCurrent(true);
+            }
+            this.playerPanels.add(panel);
+            this.add(panel);
         });
         this.revalidate();
         this.repaint();
+    }
+
+    public void setCurrent(String id){
+        this.currentPlayerId = id;
+        this.updatePanel();
     }
 
 

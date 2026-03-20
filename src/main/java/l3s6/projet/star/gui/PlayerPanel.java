@@ -2,10 +2,10 @@ package l3s6.projet.star.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import l3s6.projet.star.game.player.Player;
 import l3s6.projet.star.gui.board.ImageNotFoundException;
@@ -13,12 +13,11 @@ import l3s6.projet.star.gui.board.MeepleImagePanel;
 
 public class PlayerPanel extends JPanel {
 
-    private Player player;
     private MeepleImagePanel meepleImage;
     private JPanel playerInfo;
+    private boolean currentPlayer = false;
 
     public PlayerPanel(Player player, String color) {
-        this.player = player;
         this.setBackground(Color.WHITE);
         this.setLayout(new GridLayout(1, 2));
 
@@ -45,11 +44,25 @@ public class PlayerPanel extends JPanel {
         this.playerInfo.add(blameLabel);
 
         this.add(this.playerInfo);
+    }
 
-        this.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY),
-            new EmptyBorder(10, 10, 10, 10)
-        ));
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        
+        if (this.currentPlayer) {
+            this.setBackground(Color.LIGHT_GRAY);
+            this.playerInfo.setBackground(Color.LIGHT_GRAY); 
+        } else {
+            this.setBackground(Color.WHITE);
+            this.playerInfo.setBackground(Color.WHITE);
+        }
+    }
+
+    public void setCurrent(boolean b){
+        this.currentPlayer = b;
+        this.revalidate();
+        this.repaint();
     }
 
 }

@@ -18,12 +18,12 @@ public class TileImageManager extends ImageManager {
 
     public void loadResources(String mappingFilePath) throws IOException {
         for (char c = 'A'; c <= 'X'; c++) {
-            File file = new File("img/Base_Game_C3_Tile_" + c + ".png");
+            File file = new File(IMAGE_PATH + "Base_Game_C3_Tile_" + c + ".png");
             if (file.exists()) {
                 this.imageCache.put(c, ImageIO.read(file));
             }
         }
-        File file = new File("img/Base_Game_C3_Empty.png");
+        File file = new File(IMAGE_PATH + "Base_Game_C3_Empty.png");
         if (file.exists()) {
             this.imageCache.put('_', ImageIO.read(file));
         }

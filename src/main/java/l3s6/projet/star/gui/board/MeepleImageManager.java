@@ -18,7 +18,7 @@ public class MeepleImageManager extends ImageManager{
 
     public void loadResources(String mappingFilePath) throws IOException {
         for (char c = 'A'; c <= 'E'; c++) {
-            File file = new File("img/Base_Game_C3_Meeple_" + c + ".png");
+            File file = new File(IMAGE_PATH + "Base_Game_C3_Meeple_" + c + ".png");
             if (file.exists()) {
                 imageCache.put(c, ImageIO.read(file));
             }

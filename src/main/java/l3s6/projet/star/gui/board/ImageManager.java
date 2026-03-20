@@ -9,11 +9,13 @@ public abstract class ImageManager {
 
     protected final Map<Character, Image> imageCache = new HashMap<>();
     protected final Map<String, Character> nameToLetter = new HashMap<>();
+    protected final String IMAGE_PATH = "./ressources/img/";
+    protected final String MAPPING_PATH = "./ressources/mapping/";
 
     public abstract void loadResources(String mappingFilePath) throws IOException;
 
     protected void loadMapping(String filePath) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(MAPPING_PATH + filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty() || line.startsWith("#")) continue;

@@ -49,6 +49,7 @@ public class TilePanel extends JPanel {
          }
          @Override
          public void mouseClicked(MouseEvent e) {
+            boardPanel.setSelectedTile(TilePanel.this);
             clicked();
          }
       };

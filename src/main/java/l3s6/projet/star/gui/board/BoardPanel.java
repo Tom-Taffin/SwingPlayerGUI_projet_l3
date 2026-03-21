@@ -1,6 +1,7 @@
 package l3s6.projet.star.gui.board;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -38,6 +39,9 @@ public class BoardPanel extends JPanel {
 
    private double zoomFactor = 1.0;
    private Point lastMousePt;
+
+   private TilePanel selectedTilePanel;
+   private final Border selectedTileBorder = BorderFactory.createLineBorder(Color.RED, 3);
 
    public BoardPanel(TileClickListener listener) throws IOException, ImageNotFoundException {
       this.listener = listener;
@@ -200,11 +204,25 @@ public class BoardPanel extends JPanel {
       repaint();
    }
 
+   public void setSelectedTile(TilePanel tileToSelect) {
+       if (selectedTilePanel != null) {
+           selectedTilePanel.setBorder(null);
+       }
+
+       if (tileToSelect != null) {
+           tileToSelect.setBorder(selectedTileBorder);
+       }
+
+       selectedTilePanel = tileToSelect;
+   }
+
 
    public void createTilePanel() throws ImageNotFoundException{
       this.removeAll();
 
       this.resetZoom();
+
+      this.selectedTilePanel = null;
 
       int minX = this.board.getMinX();
       int maxX = this.board.getMaxX();

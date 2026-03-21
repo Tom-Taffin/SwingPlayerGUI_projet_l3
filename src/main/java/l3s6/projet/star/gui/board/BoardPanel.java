@@ -84,7 +84,6 @@ public class BoardPanel extends JPanel {
                if(meeple.getPlayer().getID().equals(id)){
                   try {
                      zone.giveBackMeeple();
-                     meeple.incrementPlayerMeeple();
                   } catch (NoMeepleException e) {
                      throw new RuntimeException(e);
                   }

@@ -49,9 +49,35 @@ public class BoardPanel extends JPanel {
 
       // zoom logic
       this.addMouseWheelListener(e -> {
-         if (e.getWheelRotation() < 0) zoomFactor *= 1.1;
-         else zoomFactor = Math.max(1.0, zoomFactor / 1.1);
+         if (!(getParent() instanceof JViewport)) return;
+         JViewport viewport = (JViewport) getParent();
+         
+         Point mousePoint = e.getPoint();
+         double oldZoom = zoomFactor;
+
+         if (e.getWheelRotation() < 0) {
+            zoomFactor *= 1.1;
+         } else {
+            zoomFactor = Math.max(1.0, zoomFactor / 1.1);
+         }
+
+         if (oldZoom == zoomFactor) return;
+
          revalidate();
+
+         double scaleChange = zoomFactor / oldZoom;
+
+         Point viewPos = viewport.getViewPosition();
+         int newViewX = (int) (mousePoint.x * scaleChange - (mousePoint.x - viewPos.x));
+         int newViewY = (int) (mousePoint.y * scaleChange - (mousePoint.y - viewPos.y));
+
+         int maxX = Math.max(0, (int)(getWidth() * scaleChange) - viewport.getWidth());
+         int maxY = Math.max(0, (int)(getHeight() * scaleChange) - viewport.getHeight());
+         
+         viewPos.x = Math.min(maxX, Math.max(0, newViewX));
+         viewPos.y = Math.min(maxY, Math.max(0, newViewY));
+
+         viewport.setViewPosition(viewPos);
          repaint();
       });
 

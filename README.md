@@ -1,7 +1,7 @@
 # SwingPlayerGUI
 
 TODO:
-- STARS envoyé tout seul
+- PLAYS envoyé tout seul
 - gestion placement abbey
 - doublement de increment meeple
 - gestion fin de partie

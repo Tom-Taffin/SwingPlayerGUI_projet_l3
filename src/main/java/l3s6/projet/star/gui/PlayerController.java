@@ -42,6 +42,16 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
         }
     }
 
+    @Override
+    protected void afterConnection(){
+        super.afterConnection();
+        try {
+            this.send("PLAYS");
+        } catch (InvalidArgumentNumberException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendMessage(String message) throws InvalidArgumentNumberException {
         List<String> msg = List.of(message.split(" "));
         this.send(msg.get(0), msg.subList(1, msg.size()));

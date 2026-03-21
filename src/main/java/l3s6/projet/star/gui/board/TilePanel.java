@@ -67,10 +67,17 @@ public class TilePanel extends JPanel {
             Meeple meeple = tileMeeplePair.getValue0();
             String meepleColor = this.boardPanel.idToColor.get(meeple.getPlayer().getID());
             String meeplePosition = tileMeeplePair.getValue1();
-            Character meepleEdge = meeplePosition.charAt(0);
-            int meepleIndexOnEdge = Integer.parseInt(meeplePosition.substring(1));
-            int edgeLength = tile.getEdge(Direction.fromChar(meepleEdge)).getSize();
-            this.tileImagePanel.setMeeple("regular", meepleColor, meepleEdge, meepleIndexOnEdge, edgeLength);
+            if(meeplePosition.length() >= 1) {
+               Character meepleEdge = meeplePosition.charAt(0);
+               if (meepleEdge.equals('A')){
+                  this.tileImagePanel.setMeepleOnAbbey("regular", meepleColor);
+               }
+               else if (meeplePosition.length() >= 2){
+                  int meepleIndexOnEdge = Integer.parseInt(meeplePosition.substring(1));
+                  int edgeLength = tile.getEdge(Direction.fromChar(meepleEdge)).getSize();
+                  this.tileImagePanel.setMeeple("regular", meepleColor, meepleEdge, meepleIndexOnEdge, edgeLength);
+               }
+            }
          } catch (WrongTileSyntaxException e){
             e.printStackTrace();
          }

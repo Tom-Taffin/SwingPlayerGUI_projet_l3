@@ -22,6 +22,7 @@ import l3s6.projet.star.game.meeple.AlreadyHaveMeepleException;
 import l3s6.projet.star.game.meeple.Meeple;
 import l3s6.projet.star.game.player.Player;
 import l3s6.projet.star.game.tile.Direction;
+import l3s6.projet.star.game.tile.NoAbbeyException;
 import l3s6.projet.star.game.tile.Tile;
 import l3s6.projet.star.game.tile.TileBuilder;
 import l3s6.projet.star.game.tile.WrongTileSyntaxException;
@@ -131,7 +132,6 @@ public class BoardPanel extends JPanel {
                if(meeple.getPlayer().getID().equals(id)){
                   try {
                      zone.giveBackMeeple();
-                     meeple.incrementPlayerMeeple();
                   } catch (NoMeepleException e) {
                      throw new RuntimeException(e);
                   }
@@ -149,12 +149,16 @@ public class BoardPanel extends JPanel {
 
    public void addTileWithMeeple(String id, String tileName, Coordinates coord, String meepleType, String meeplePosition) throws WrongTileSyntaxException, ImageNotFoundException{
       Character edge = meeplePosition.charAt(0);
-      int index = Integer.parseInt(meeplePosition.substring(1));
       this.board.putTileAt(new TileBuilder().build(tileName), coord);
       try {
          Meeple meeple = new Meeple(this.idToPlayer.get(id), coord);
-         this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(meeple);
-      } catch (WrongTopologyException | WrongTileSyntaxException | AlreadyHaveMeepleException e) {
+         if (edge.equals('A')){
+            this.board.getTileAt(coord).setAbbeyMeeple(meeple);
+         } else {
+            int index = Integer.parseInt(meeplePosition.substring(1));
+            this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(meeple);
+         }
+      } catch (WrongTopologyException | WrongTileSyntaxException | AlreadyHaveMeepleException | NoAbbeyException e) {
          e.printStackTrace();
       };
       this.createTilePanel();

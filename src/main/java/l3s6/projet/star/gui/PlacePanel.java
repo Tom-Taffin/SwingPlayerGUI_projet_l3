@@ -177,12 +177,16 @@ public class PlacePanel extends JPanel {
         }
 
         String pos = meeplePositionField.getText().trim();
-        if (pos.length() >= 2 && !currentBaseTileName.contains("empty")) {
+        if (pos.length() >= 1 && !currentBaseTileName.contains("empty")) {
             try {
-                char edge = pos.charAt(0);
-                int index = Integer.parseInt(pos.substring(1));
                 String color = this.playerController.getGui().getBoardPanel().idToColor.get(this.playerController.getId()); 
-                this.tileImagePanel.setMeeple("regular", color, edge, index, new TileBuilder().build(orientation.charAt(0) + this.currentBaseTileName).getEdge(Direction.fromChar(edge)).getSize());
+                Character edge = pos.charAt(0);
+                if (edge.equals('A')){
+                    this.tileImagePanel.setMeepleOnAbbey("regular", color);
+                } else if (pos.length() >= 2){
+                    int index = Integer.parseInt(pos.substring(1));
+                    this.tileImagePanel.setMeeple("regular", color, edge, index, new TileBuilder().build(orientation.charAt(0) + this.currentBaseTileName).getEdge(Direction.fromChar(edge)).getSize());
+                }
             } catch (ImageNotFoundException | WrongTileSyntaxException e){
                 e.printStackTrace();
             }

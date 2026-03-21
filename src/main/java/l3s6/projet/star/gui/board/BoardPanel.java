@@ -6,6 +6,9 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.*;
 
@@ -32,6 +35,9 @@ public class BoardPanel extends JPanel {
    private final List<String> colors = List.of("blue", "green", "yellow", "red", "black");
    private int nextColor;
 
+   private double zoomFactor = 1.0;
+   private Point lastMousePt;
+
    public BoardPanel(TileClickListener listener) throws IOException, ImageNotFoundException {
       this.listener = listener;
       this.idToColor = new HashMap<>();
@@ -39,6 +45,47 @@ public class BoardPanel extends JPanel {
       this.nextColor = 0;
       this.board = new Board();
       this.setBackground(Color.BLACK);
+
+      // zoom logic
+      this.addMouseWheelListener(e -> {
+         if (e.getWheelRotation() < 0) zoomFactor *= 1.1;
+         else zoomFactor = Math.max(1.0, zoomFactor / 1.1);
+         revalidate();
+         repaint();
+      });
+
+      // pan logic
+      MouseAdapter panHandler = new MouseAdapter() {
+         @Override
+         public void mousePressed(MouseEvent e) {
+            lastMousePt = e.getLocationOnScreen();
+         }
+
+         @Override
+         public void mouseDragged(MouseEvent e) {
+            if (lastMousePt == null || !(getParent() instanceof JViewport)) return;
+
+            JViewport viewport = (JViewport) getParent();
+            Point currentPt = e.getLocationOnScreen();
+            
+            int dx = lastMousePt.x - currentPt.x;
+            int dy = lastMousePt.y - currentPt.y;
+
+            Point viewPos = viewport.getViewPosition();
+            viewPos.translate(dx, dy);
+
+            int maxX = Math.max(0, getWidth() - viewport.getWidth());
+            int maxY = Math.max(0, getHeight() - viewport.getHeight());
+            viewPos.x = Math.min(maxX, Math.max(0, viewPos.x));
+            viewPos.y = Math.min(maxY, Math.max(0, viewPos.y));
+
+            viewport.setViewPosition(viewPos);
+            lastMousePt = currentPt;
+         }
+      };
+      this.addMouseListener(panHandler);
+      this.addMouseMotionListener(panHandler);
+
       this.createTilePanel();
    }
 
@@ -153,11 +200,12 @@ public class BoardPanel extends JPanel {
    @Override
    public Dimension getPreferredSize() {
       Container parent = getParent();
-      if (parent != null) {
-         int h = parent.getHeight();
-         return new Dimension(h, h);
+      int baseSize = 800; 
+      if (parent instanceof JViewport && parent.getHeight() > 0) {
+          baseSize = parent.getHeight();
       }
-      return super.getPreferredSize();
+      int scaledSize = (int) (baseSize * zoomFactor);
+      return new Dimension(scaledSize, scaledSize);
    }
 
 }

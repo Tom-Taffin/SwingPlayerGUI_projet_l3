@@ -23,15 +23,33 @@ public class MainWindow extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         this.boardPanel = new BoardPanel(playerController);
-        mainPanel.add(this.boardPanel, BorderLayout.WEST);
+
+        JScrollPane scrollPane = new JScrollPane(this.boardPanel);
+        scrollPane.setBorder(null);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+        JPanel leftContainer = new JPanel(new BorderLayout()) {
+            @Override
+            public Dimension getPreferredSize() {
+                Container p = getParent();
+                int h = (p != null && p.getHeight() > 0) ? p.getHeight() : 800;
+                return new Dimension(h, h);
+            }
+        };
+
+        leftContainer.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(leftContainer, BorderLayout.WEST);
 
         this.chatPanel = new ChatPanel(playerController);
         mainPanel.add(this.chatPanel, BorderLayout.CENTER);
 
         setContentPane(mainPanel);
-
-        setSize(new Dimension(1200, 800));;
+        setSize(new Dimension(1200, 800));
         setVisible(true);
+        
+        revalidate();
+        repaint();
     }
 
     public BoardPanel getBoardPanel() {

@@ -11,23 +11,52 @@ import l3s6.projet.star.game.tile.Tile;
 import l3s6.projet.star.game.tile.WrongTileSyntaxException;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TilePanel extends JPanel {
    private TileClickListener listener;
    private BoardPanel boardPanel;
    private Coordinates coords;
    private TileImagePanel tileImagePanel;
-   private boolean hovered = false;
    
    public TilePanel(TileClickListener listener, BoardPanel boardPanel, Coordinates coords, String tileName) throws ImageNotFoundException {
       this.setLayout(new BorderLayout());
-      this.addMouseListener(new TileMouseListener(this));
       this.listener = listener;
       this.boardPanel = boardPanel;
       this.coords = coords;
       this.tileImagePanel = new TileImagePanel(tileName);
-      this.tileImagePanel.addMouseListener(new TileMouseListener(this));
       this.add(this.tileImagePanel, BorderLayout.CENTER);
+
+      MouseAdapter mouseLogic = new MouseAdapter() {
+         @Override
+         public void mousePressed(MouseEvent e) {
+            boardPanel.dispatchEvent(SwingUtilities.convertMouseEvent(e.getComponent(), e, boardPanel));
+         }
+         @Override
+         public void mouseDragged(MouseEvent e) {
+            boardPanel.dispatchEvent(SwingUtilities.convertMouseEvent(e.getComponent(), e, boardPanel));
+         }
+         @Override
+         public void mouseEntered(MouseEvent e) {
+            tileImagePanel.setHovered(true);
+            tileImagePanel.repaint();
+         }
+         @Override
+         public void mouseExited(MouseEvent e) {
+            tileImagePanel.setHovered(false);
+            tileImagePanel.repaint();
+         }
+         @Override
+         public void mouseClicked(MouseEvent e) {
+            clicked();
+         }
+      };
+
+      this.addMouseListener(mouseLogic);
+      this.addMouseMotionListener(mouseLogic);
+      this.tileImagePanel.addMouseListener(mouseLogic);
+      this.tileImagePanel.addMouseMotionListener(mouseLogic);
    }
 
    public TilePanel(TileClickListener listener, BoardPanel boardPanel, Coordinates coords, Tile tile) throws ImageNotFoundException {
@@ -55,9 +84,7 @@ public class TilePanel extends JPanel {
    }
 
    public void setHovered(boolean hovered) {
-      this.hovered = hovered;
       this.tileImagePanel.setHovered(hovered);
-      repaint();
    }
 
 }

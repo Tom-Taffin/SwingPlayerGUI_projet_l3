@@ -164,8 +164,21 @@ public class BoardPanel extends JPanel {
       this.createTilePanel();
    }
 
+   public void resetZoom(){
+      this.zoomFactor = 1.0;
+      Container parent = getParent();
+      if (parent instanceof JViewport) {
+         ((JViewport) parent).setViewPosition(new Point(0, 0));
+      }
+      revalidate();
+      repaint();
+   }
+
+
    public void createTilePanel() throws ImageNotFoundException{
       this.removeAll();
+
+      this.resetZoom();
 
       int minX = this.board.getMinX();
       int maxX = this.board.getMaxX();

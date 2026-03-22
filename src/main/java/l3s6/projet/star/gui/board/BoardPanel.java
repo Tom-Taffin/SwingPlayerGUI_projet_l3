@@ -188,7 +188,7 @@ public class BoardPanel extends JPanel {
             int index = Integer.parseInt(meeplePosition.substring(1));
             this.board.getTileAt(coord).getEdge(Direction.fromChar(edge)).getZoneAt(index).setMeeple(meeple);
          }
-      } catch (WrongTopologyException | WrongTileSyntaxException | AlreadyHaveMeepleException | NoAbbeyException e) {
+      } catch (WrongTopologyException | WrongTileSyntaxException | AlreadyHaveMeepleException | NoAbbeyException | NoMeepleException e) {
          e.printStackTrace();
       };
       this.createTilePanel();

@@ -2,6 +2,12 @@
 
 Ce programme est une interface graphique pour jouer à Carcassone.
 
+## Table des matières
+
+- [Installation](#installation)
+- [Utilisation](#utilisation)
+- [Fonctionnement](#fonctionnement)
+
 ## Installation
 
 Se référer à l'installation dans [participant_info](https://gitlab-etu.fil.univ-lille.fr/l3s6-projet-g6-star/participant_infos/-/blob/master/participant_info.md).

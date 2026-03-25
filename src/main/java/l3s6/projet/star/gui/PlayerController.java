@@ -188,6 +188,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnEnd(String id, List<String> ids) {
+        this.gui.getChatPanel().getPlayersPanel().setWinners(ids);
         displayMessage(String.format("[%s] The game ends. Winners : %s.", id, ids.toString()));
     }
 

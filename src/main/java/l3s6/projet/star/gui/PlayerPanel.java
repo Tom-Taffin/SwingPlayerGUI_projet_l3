@@ -20,6 +20,7 @@ public class PlayerPanel extends JPanel {
     private JPanel playerInfo;
     private boolean currentPlayer = false;
     private boolean isExpelled = false;
+    private boolean isWinner = false;
 
     public PlayerPanel(Player player, String color) {
         this.setBackground(Color.WHITE);
@@ -54,15 +55,21 @@ public class PlayerPanel extends JPanel {
     public void paint(Graphics g){
         super.paint(g);
 
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        int w = getWidth();
+        int h = getHeight();
+        g2d.setStroke(new BasicStroke(5));
+
         if (this.isExpelled){
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            int w = getWidth();
-            int h = getHeight();
             g2d.setColor(Color.RED);
-            g2d.setStroke(new BasicStroke(5));
             g2d.drawLine(0, 0, w, h);
             g2d.drawLine(w, 0, 0, h);
+        }
+
+        if (this.isWinner){
+            g2d.setColor(Color.GREEN);
+            g2d.drawRect(1, 1, w - 2, h - 2);
         }
         
     }
@@ -78,6 +85,12 @@ public class PlayerPanel extends JPanel {
 
     public void setExpelled(boolean b){
         this.isExpelled = b;
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void setWinner(boolean b){
+        this.isWinner = b;
         this.revalidate();
         this.repaint();
     }

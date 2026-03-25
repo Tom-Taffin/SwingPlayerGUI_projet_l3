@@ -17,10 +17,12 @@ public class PlayersPanel extends JPanel {
     private List<PlayerPanel> playerPanels;
     private String currentPlayerId;
     private List<String> expelledPlayers;
+    private List<String> winners;
 
     public PlayersPanel(PlayerController playerController) {
         this.playerController = playerController;
         this.expelledPlayers = new ArrayList<>();
+        this.winners = new ArrayList<>();
         this.setBackground(Color.WHITE);
     }
 
@@ -41,6 +43,9 @@ public class PlayersPanel extends JPanel {
             if (this.expelledPlayers.contains(player.getID())) {
                 panel.setExpelled(true);
             }
+            if (this.winners.contains(player.getID())) {
+                panel.setWinner(true);
+            }
             this.playerPanels.add(panel);
             this.add(panel);
         });
@@ -55,6 +60,11 @@ public class PlayersPanel extends JPanel {
 
     public void expelPlayer(String id){
         this.expelledPlayers.add(id);
+        this.updatePanel();
+    }
+
+    public void setWinners(List<String> ids){
+        this.winners = ids;
         this.updatePanel();
     }
 

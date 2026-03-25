@@ -16,9 +16,11 @@ public class PlayersPanel extends JPanel {
     private Map<String, Player> colorsToPlayers;
     private List<PlayerPanel> playerPanels;
     private String currentPlayerId;
+    private List<String> expelledPlayers;
 
     public PlayersPanel(PlayerController playerController) {
         this.playerController = playerController;
+        this.expelledPlayers = new ArrayList<>();
         this.setBackground(Color.WHITE);
     }
 
@@ -36,6 +38,9 @@ public class PlayersPanel extends JPanel {
             if (player.getID().equals(this.currentPlayerId)) {
                 panel.setCurrent(true);
             }
+            if (this.expelledPlayers.contains(player.getID())) {
+                panel.setExpelled(true);
+            }
             this.playerPanels.add(panel);
             this.add(panel);
         });
@@ -48,5 +53,9 @@ public class PlayersPanel extends JPanel {
         this.updatePanel();
     }
 
+    public void expelPlayer(String id){
+        this.expelledPlayers.add(id);
+        this.updatePanel();
+    }
 
 }

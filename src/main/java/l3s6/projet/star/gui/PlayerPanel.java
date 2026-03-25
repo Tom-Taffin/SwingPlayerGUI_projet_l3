@@ -1,9 +1,12 @@
 package l3s6.projet.star.gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 
 import javax.swing.*;
 
@@ -16,6 +19,7 @@ public class PlayerPanel extends JPanel {
     private MeepleImagePanel meepleImage;
     private JPanel playerInfo;
     private boolean currentPlayer = false;
+    private boolean isExpelled = false;
 
     public PlayerPanel(Player player, String color) {
         this.setBackground(Color.WHITE);
@@ -47,20 +51,33 @@ public class PlayerPanel extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g){
-        super.paintComponent(g);
-        
-        if (this.currentPlayer) {
-            this.setBackground(Color.LIGHT_GRAY);
-            this.playerInfo.setBackground(Color.LIGHT_GRAY); 
-        } else {
-            this.setBackground(Color.WHITE);
-            this.playerInfo.setBackground(Color.WHITE);
+    public void paint(Graphics g){
+        super.paint(g);
+
+        if (this.isExpelled){
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            int w = getWidth();
+            int h = getHeight();
+            g2d.setColor(Color.RED);
+            g2d.setStroke(new BasicStroke(5));
+            g2d.drawLine(0, 0, w, h);
+            g2d.drawLine(w, 0, 0, h);
         }
+        
     }
 
     public void setCurrent(boolean b){
         this.currentPlayer = b;
+        Color c = b ? Color.LIGHT_GRAY : Color.WHITE;
+        this.setBackground(c);
+        this.playerInfo.setBackground(c);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void setExpelled(boolean b){
+        this.isExpelled = b;
         this.revalidate();
         this.repaint();
     }

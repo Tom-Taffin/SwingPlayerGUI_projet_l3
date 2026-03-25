@@ -159,6 +159,7 @@ public class PlayerController extends PlayerView<PlayerClient> implements TileCl
 
     @Override
     public void updateOnExpel(String id, String expelledPlayer) {
+        this.gui.getChatPanel().getPlayersPanel().expelPlayer(expelledPlayer);
         displayMessage(String.format("[%s] Player %s was expelled.", id, expelledPlayer));
     }
 

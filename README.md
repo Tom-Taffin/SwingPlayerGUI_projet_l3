@@ -46,7 +46,11 @@ La tuile que vous avez pioché se mettra à jour automatiquement en fonction de 
 
 ![p4](./images/p4.png)
 
-Quand vous êtes sûr de votre placement, appuyez sur le bouton *Place* et l'arbitre sera mis au courant de votre coup. Si celui-ci est refusé, l'arbitre vous mettra un blâme, sinon l'arbitre confirmera votre placement et la tuile sera visible sur le plateau. 
+Quand vous êtes sûr de votre placement, appuyez sur le bouton *Place* et l'arbitre sera mis au courant de votre coup. Si celui-ci est refusé, l'arbitre vous mettra un blâme, sinon l'arbitre confirmera votre placement et la tuile sera visible sur le plateau.
+
+Voici un exemple de partie terminée. Les joueurs qui ont été banni sont marqués d'une croix et les joueurs ayant gagné la partie sont entourés en vert.
+
+![p5](./images/p5.png)
 
 ## Fonctionnement
 

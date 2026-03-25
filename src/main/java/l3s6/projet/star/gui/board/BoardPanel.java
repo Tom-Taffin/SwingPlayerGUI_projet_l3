@@ -153,22 +153,26 @@ public class BoardPanel extends JPanel {
    }
 
    public void removeMeeple(String id, int x, int y) throws ImageNotFoundException{
-      Tile tile = this.board.getTileAt(new Coordinates(x, y));
-      for (Direction d : Direction.values()){
-         Edge edge = tile.getEdge(d);
-         for (Zone zone : edge.getZones()){
-            if (zone.hasMeeple()){
-               Meeple meeple = zone.getMeeple();
-               if(meeple.getPlayer().getID().equals(id)){
-                  try {
+      try {
+         Tile tile = this.board.getTileAt(new Coordinates(x, y));
+         if (tile.hasMeepleOnAbbey()){
+            tile.giveBackAbbeyMeeple();
+         }
+         for (Direction d : Direction.values()){
+            Edge edge = tile.getEdge(d);
+            for (Zone zone : edge.getZones()){
+               if (zone.hasMeeple()){
+                  Meeple meeple = zone.getMeeple();
+                  if(meeple.getPlayer().getID().equals(id)){
                      zone.giveBackMeeple();
-                  } catch (NoMeepleException e) {
-                     throw new RuntimeException(e);
                   }
                }
             }
          }
+      } catch(NoMeepleException | NoAbbeyException e){
+         throw new RuntimeException(e);
       }
+      
       this.createTilePanel();
    }
 

@@ -116,8 +116,8 @@ public class TileImagePanel extends JPanel {
    }
 
    private void drawMeeple(Graphics2D g2, int x, int y, int size) {
-      int meepleW = size / 5;
-      int meepleH = size / 5;
+      int meepleW = size / 4;
+      int meepleH = size / 4;
 
       int meepleX = 0;
       int meepleY = 0;

@@ -10,7 +10,7 @@ Ce programme est une interface graphique pour jouer à Carcassone.
 
 ## Installation
 
-Se référer à l'installation dans [participant_info](https://gitlab-etu.fil.univ-lille.fr/l3s6-projet-g6-star/participant_infos/-/blob/master/participant_info.md).
+Se référer à l'installation dans [participant_info](https://github.com/Tom-Taffin/participant_infos_projet_l3).
 
 ## Utilisation
 
@@ -40,7 +40,7 @@ Au moment de votre tour, vous pourrez appuyer sur une des cases du plateau pour 
 
 ![p3](./images/p3.png)
 
-Référez-vous au fichier [message_carcassonne](https://gitlab-etu.fil.univ-lille.fr/l3s6-projet-g6-star/participant_infos/-/blob/master/messages_carcassonne.md) pour comprendre comment placer le meeple à l'endroit que vous voulez sur la tuile. 
+Référez-vous au fichier [message_carcassonne](https://github.com/Tom-Taffin/participant_infos_projet_l3/blob/master/messages_carcassonne.md) pour comprendre comment placer le meeple à l'endroit que vous voulez sur la tuile. 
 
 La tuile que vous avez pioché se mettra à jour automatiquement en fonction de l'orientation et de la position du meeple que vous choisissez. Par exemple :
 
@@ -54,4 +54,4 @@ Voici un exemple de partie terminée. Les joueurs qui ont été banni sont marqu
 
 ## Fonctionnement
 
-Le programme communique avec un arbitre à l'aide de la librairie [carcassonne_connection_library](https://gitlab-etu.fil.univ-lille.fr/l3s6-projet-g6-star/carcassonne_connection_library) et met à jour le plateu de jeu à l'aide de [game-elements](https://gitlab-etu.fil.univ-lille.fr/l3s6-projet-g6-star/game-elements).
+Le programme communique avec un arbitre à l'aide de la librairie [carcassonne_connection_library](https://github.com/Tom-Taffin/carcassonne_connection_library_projet_l3) et met à jour le plateu de jeu à l'aide de [game-elements](https://github.com/Tom-Taffin/game-elements_projet_l3).

@@ -1,4 +1,4 @@
-# SwingPlayerGUI
+# SwingPlayerGUI - Projet l3
 
 Ce programme est une interface graphique pour jouer à Carcassone.
 
